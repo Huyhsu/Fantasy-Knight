@@ -7,7 +7,7 @@ public class CoreComponent : MonoBehaviour, ILogicUpdate
 {
     protected Core Core;
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         Core = transform.parent.GetComponent<Core>();
 
