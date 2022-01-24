@@ -26,7 +26,7 @@ public class Core : MonoBehaviour
     
     #endregion
 
-    #region w/ Unity Callbacks
+    #region w/ Unity Callback Functions
 
     private void Awake()
     {
