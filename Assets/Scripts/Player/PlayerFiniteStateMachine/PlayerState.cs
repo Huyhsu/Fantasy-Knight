@@ -36,7 +36,7 @@ public class PlayerState
 
     #endregion
     
-    #region w/ State workflow
+    #region w/ State Workflow
 
     public virtual void DoCheck() { }
 
