@@ -21,6 +21,11 @@ public class Player : MonoBehaviour
 
     public PlayerStateMachine StateMachine { get; private set; }
 
+    public PlayerIdleState IdleState { get; private set; }
+    public PlayerMoveState MoveState { get; private set; }
+    public PlayerJumpState JumpState { get; private set; }
+    public PlayerInAirState InAirState { get; private set; }
+
     #endregion
 
     #region w/ Components
@@ -38,6 +43,12 @@ public class Player : MonoBehaviour
         Core = GetComponentInChildren<Core>();
 
         StateMachine = new PlayerStateMachine();
+
+        IdleState = new PlayerIdleState(this, "idle");
+        MoveState = new PlayerMoveState(this, "move");
+        JumpState = new PlayerJumpState(this, "inAir");
+        InAirState = new PlayerInAirState(this, "inAir");
+
     }
 
     private void Start()
@@ -45,11 +56,12 @@ public class Player : MonoBehaviour
         InputHandler = GetComponent<PlayerInputHandler>();
         Animator = GetComponent<Animator>();
         
-        // StateMachine.Initialize();
+        StateMachine.Initialize(IdleState);
     }
 
     private void Update()
     {
+        Core.LogicUpdate();
         StateMachine.CurrentState.LogicUpdate();
     }
 

@@ -41,9 +41,12 @@ public class CollisionSenses : CoreComponent
 
     #region w/ Draw On Scene
 
-    public void OnDrawGizmos()
+    public virtual void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(GroundCheck.position, GroundCheckRadius);
+        if (Core != null)
+        {
+            Gizmos.DrawWireSphere(GroundCheck.position, GroundCheckRadius);
+        }
     }
 
     #endregion

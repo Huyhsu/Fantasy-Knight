@@ -2,14 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAbilityState : PlayerState
+public class PlayerMoveState : PlayerGroundedState
 {
-    protected bool IsAbilityDone;
-    protected bool IsGrounded;
-
-    protected bool JumpInput;
-
-    protected PlayerAbilityState(Player player, string animationBoolName) : base(player, animationBoolName)
+    public PlayerMoveState(Player player, string animationBoolName) : base(player, animationBoolName)
     {
     }
 
@@ -18,13 +13,11 @@ public class PlayerAbilityState : PlayerState
     public override void DoCheck()
     {
         base.DoCheck();
-        IsGrounded = Core.CollisionSenses.Ground;
     }
 
     public override void Enter()
     {
         base.Enter();
-        IsAbilityDone = false;
     }
 
     public override void Exit()
@@ -35,23 +28,20 @@ public class PlayerAbilityState : PlayerState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (!IsAbilityDone) return;
+        Core.Movement.CheckIfShouldFlip(XInput);
+        Core.Movement.SetVelocityX(XInput * PlayerData.movementVelocity);
+        if (IsExitingState) return;
 
-        if (IsGrounded && Core.Movement.CurrentVelocity.y < 0.01f)
+        if (XInput == 0)
         {
             StateMachine.ChangeState(Player.IdleState);
-        }
-        else
-        {
-            StateMachine.ChangeState(Player.InAirState);
         }
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-    }    
+    }
 
     #endregion
-
 }

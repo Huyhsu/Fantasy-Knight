@@ -5,7 +5,7 @@ using UnityEngine.Assertions.Must;
 
 public class Movement : CoreComponent
 {
-    public Rigidbody2D Rigidbody { get; private set; }
+    public Rigidbody2D Rigidbody2D { get; private set; }
     
     public int FacingDirection { get; private set; }
     
@@ -18,14 +18,15 @@ public class Movement : CoreComponent
     protected override void Awake()
     {
         base.Awake();
-        Rigidbody = GetComponentInParent<Rigidbody2D>();
+        Rigidbody2D = GetComponentInParent<Rigidbody2D>();
         FacingDirection = 1;
         CanSetVelocity = true;
     }
 
     public override void LogicUpdate()
     {
-        CurrentVelocity = Rigidbody.velocity;
+        base.LogicUpdate();
+        CurrentVelocity = Rigidbody2D.velocity;
     }
 
     #region w/ Flip Functions
@@ -33,7 +34,7 @@ public class Movement : CoreComponent
     private void Flip()
     {
         FacingDirection *= -1;
-        Rigidbody.transform.Rotate(0.0f,180.0f,0.0f);
+        Rigidbody2D.transform.Rotate(0.0f,180.0f,0.0f);
     }
 
     public void CheckIfShouldFlip(int xInput)
@@ -51,6 +52,7 @@ public class Movement : CoreComponent
     public void SetVelocityZero()
     {
         _workspace = Vector2.zero;
+        SetFinalVelocity();
     }
 
     public void SetVelocityX(float velocityX)
@@ -69,7 +71,7 @@ public class Movement : CoreComponent
     {
         if (CanSetVelocity)
         {
-            Rigidbody.velocity = _workspace;
+            Rigidbody2D.velocity = _workspace;
             CurrentVelocity = _workspace;
         }
     }
