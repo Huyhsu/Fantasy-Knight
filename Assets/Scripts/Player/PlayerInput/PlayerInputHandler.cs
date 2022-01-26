@@ -6,18 +6,32 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputHandler : MonoBehaviour
 {
+    // Delay Check Time
     [SerializeField] private float inputHoldTime = 0.2f;
+
+    #region w/ Components
 
     private PlayerInput _playerInput;
 
-    private Vector2 _rawMovementInput;
+    #endregion
+    
+    #region w/ Input Start Time
 
     private float _jumpInputStartTime;
-    
+
+    #endregion
+
+    #region w/ Input Variables
+
+    private Vector2 _rawMovementInput;
     public int NormalizedXInput { get; private set; }
     public int NormalizedYInput { get; private set; }
     public bool JumpInput { get; private set; }
-    public bool JumpInputStop { get; private set; }
+    public bool JumpInputStop { get; private set; }    
+
+    #endregion
+
+    #region w/ Unity Callback Functions
 
     private void Start()
     {
@@ -27,7 +41,9 @@ public class PlayerInputHandler : MonoBehaviour
     private void Update()
     {
         CheckJumpInputHoldTime();
-    }
+    }    
+
+    #endregion
 
     #region w/ Movement
 

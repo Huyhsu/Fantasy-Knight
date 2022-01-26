@@ -7,24 +7,27 @@ public class CollisionSenses : CoreComponent
 {
     #region w/ Check Transform and Check Distance
 
+    // LayerMask
     [SerializeField] private LayerMask whatIsGround;
-    
+    // Transform
     [SerializeField] private Transform groundCheck;
-    
+    // Distance
     [SerializeField] private float groundCheckRadius;
 
+    // LayerMask
     public LayerMask WhatIsGround
     {
         get => whatIsGround;
         private set => whatIsGround = value;
     }
-    
+    // Transform
     public Transform GroundCheck
     {
         get => GenericNotImplementedError<Transform>.TryGet(groundCheck, Core.transform.parent.name);
         private set => groundCheck = value;
     }
 
+    // Distance
     public float GroundCheckRadius
     {
         get => groundCheckRadius;
@@ -43,10 +46,9 @@ public class CollisionSenses : CoreComponent
 
     public virtual void OnDrawGizmos()
     {
-        if (Core != null)
-        {
-            Gizmos.DrawWireSphere(GroundCheck.position, GroundCheckRadius);
-        }
+        if (Core == null) return;
+        
+        Gizmos.DrawWireSphere(GroundCheck.position, GroundCheckRadius);
     }
 
     #endregion

@@ -6,40 +6,28 @@ public class PlayerInAirState : PlayerState
 {
     public PlayerInAirState(Player player, string animationBoolName) : base(player, animationBoolName)
     {
+        // 1 IdleState (GroundedState)
+        // 2 JumpState (AbilityState)
     }
-
-    #region w/ Input Variables
-
-    private int _xInput;
-    private bool _jumpInput;
-    private bool _jumpInputStop;
-
-    #endregion
-
-    #region w/ Check Variables
-
-    private bool _isGrounded;
-    private bool _isJumping;
-    private bool _isCoyoteTime;
-
-    #endregion
     
     #region w/ Jump
-
-    public void StartCoyoteTime() => _isCoyoteTime = true;
-
+    
+    private bool _isJumping;
+    private bool _isJumpCoyoteTime;
+    
     public void SetIsJumping() => _isJumping = true;
-
+    public void StartJumpCoyoteTime() => _isJumpCoyoteTime = true;
+    
     private void CheckJumpMultiplier()
     {
         if (!_isJumping) return;
         
-        if (_jumpInputStop)
+        if (JumpInputStop)
         {
-            Core.Movement.SetVelocityY(Core.Movement.CurrentVelocity.y * PlayerData.variableJumpHeightMultiplier);
+            Core.Movement.SetVelocityY(CurrentVelocity.y * PlayerData.variableJumpHeightMultiplier);
             _isJumping = false;
         }
-        else if (Core.Movement.CurrentVelocity.y <= 0f)
+        else if (CurrentVelocity.y < Mathf.Epsilon)
         {
             _isJumping = false;
         }
@@ -47,9 +35,9 @@ public class PlayerInAirState : PlayerState
     
     private void CheckCoyoteTime()
     {
-        if (_isCoyoteTime && Time.time >= StartTime + PlayerData.coyoteTime)
+        if (_isJumpCoyoteTime && Time.time >= StartTime + PlayerData.coyoteTime)
         {
-            _isCoyoteTime = false;
+            _isJumpCoyoteTime = false;
             Player.JumpState.DecreaseAmountOfJumpsLeft();
         }
     }
@@ -61,7 +49,6 @@ public class PlayerInAirState : PlayerState
     public override void DoCheck()
     {
         base.DoCheck();
-        _isGrounded = Core.CollisionSenses.Ground;
     }
 
     public override void Enter()
@@ -79,33 +66,30 @@ public class PlayerInAirState : PlayerState
         base.LogicUpdate();
         
         CheckCoyoteTime();
-        
-        _xInput = Player.InputHandler.NormalizedXInput;
-        _jumpInput = Player.InputHandler.JumpInput;
-        _jumpInputStop = Player.InputHandler.JumpInputStop;
-        
-        CheckJumpMultiplier();
 
-        if (_isGrounded && Core.Movement.CurrentVelocity.y < 0.01f)
+        if (IsGrounded && CurrentVelocity.y < Mathf.Epsilon)
         {
+            // Idle
             StateMachine.ChangeState(Player.IdleState);
         }
-        else if (_jumpInput && Player.JumpState.CanJump())
+        else if (JumpInput && Player.JumpState.CanJump)
         {
+            // Jump
             StateMachine.ChangeState(Player.JumpState);
         }
         else
         {
-            Core.Movement.CheckIfShouldFlip(_xInput);
-            Core.Movement.SetVelocityX(_xInput * PlayerData.movementVelocity);
-            
-            Player.Animator.SetFloat("yVelocity", Core.Movement.CurrentVelocity.y);
+            // Set up Jump/Fall Animation
+            Player.Animator.SetFloat("yVelocity", CurrentVelocity.y);
         }
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+        
+        CheckJumpMultiplier();
+        Core.Movement.SetVelocityX(XInput * PlayerData.movementVelocity);
     }
 
     #endregion

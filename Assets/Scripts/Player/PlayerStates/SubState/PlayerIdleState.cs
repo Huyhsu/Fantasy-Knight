@@ -6,6 +6,7 @@ public class PlayerIdleState : PlayerGroundedState
 {
     public PlayerIdleState(Player player, string animationBoolName) : base(player, animationBoolName)
     {
+        // 1 MoveState (GroundedState)
     }
 
     #region w/ State Workflow
@@ -18,6 +19,7 @@ public class PlayerIdleState : PlayerGroundedState
     public override void Enter()
     {
         base.Enter();
+        
         Core.Movement.SetVelocityX(0f);
     }
 
@@ -33,6 +35,7 @@ public class PlayerIdleState : PlayerGroundedState
 
         if (XInput != 0)
         {
+            // Move
             StateMachine.ChangeState(Player.MoveState);
         }
     }

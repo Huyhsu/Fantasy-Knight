@@ -4,21 +4,19 @@ using UnityEngine;
 
 public class PlayerAbilityState : PlayerState
 {
-    protected bool IsAbilityDone;
-    protected bool IsGrounded;
-
-    protected bool JumpInput;
-
     protected PlayerAbilityState(Player player, string animationBoolName) : base(player, animationBoolName)
     {
+        // 1 IdleState (GroundedState)
+        // 2 InAirState (State)
     }
 
+    protected bool IsAbilityDone;
+    
     #region w/ State Workflow
 
     public override void DoCheck()
     {
         base.DoCheck();
-        IsGrounded = Core.CollisionSenses.Ground;
     }
 
     public override void Enter()
@@ -37,12 +35,14 @@ public class PlayerAbilityState : PlayerState
         base.LogicUpdate();
         if (!IsAbilityDone) return;
 
-        if (IsGrounded && Core.Movement.CurrentVelocity.y < 0.01f)
+        if (IsGrounded && CurrentVelocity.y < Mathf.Epsilon)
         {
+            // Idle
             StateMachine.ChangeState(Player.IdleState);
         }
         else
         {
+            // InAir
             StateMachine.ChangeState(Player.InAirState);
         }
     }

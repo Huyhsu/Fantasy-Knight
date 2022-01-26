@@ -10,9 +10,8 @@ public class Movement : CoreComponent
     public int FacingDirection { get; private set; }
     
     public bool CanSetVelocity { get; private set; }
-    
     public Vector2 CurrentVelocity { get; private set; }
-
+    
     private Vector2 _workspace;
 
     protected override void Awake()
@@ -67,7 +66,7 @@ public class Movement : CoreComponent
         SetFinalVelocity();
     }
     
-    public void SetFinalVelocity()
+    private void SetFinalVelocity()
     {
         if (CanSetVelocity)
         {

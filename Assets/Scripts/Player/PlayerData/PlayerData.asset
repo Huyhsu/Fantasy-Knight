@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be453557b7321484f99957973834a2b9, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  movementVelocity: 10
+  movementVelocity: 7
   jumpVelocity: 15
   amountOfJumps: 1
   coyoteTime: 0.2

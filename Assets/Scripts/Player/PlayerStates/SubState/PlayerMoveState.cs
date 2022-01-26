@@ -6,6 +6,7 @@ public class PlayerMoveState : PlayerGroundedState
 {
     public PlayerMoveState(Player player, string animationBoolName) : base(player, animationBoolName)
     {
+        // 1 IdleState (GroundedState)
     }
 
     #region w/ State Workflow
@@ -28,12 +29,11 @@ public class PlayerMoveState : PlayerGroundedState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        Core.Movement.CheckIfShouldFlip(XInput);
-        Core.Movement.SetVelocityX(XInput * PlayerData.movementVelocity);
         if (IsExitingState) return;
 
         if (XInput == 0)
         {
+            // Idle
             StateMachine.ChangeState(Player.IdleState);
         }
     }
@@ -41,6 +41,8 @@ public class PlayerMoveState : PlayerGroundedState
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+        
+        Core.Movement.SetVelocityX(XInput * PlayerData.movementVelocity);
     }
 
     #endregion

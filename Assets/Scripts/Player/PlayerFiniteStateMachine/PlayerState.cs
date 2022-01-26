@@ -4,21 +4,42 @@ using UnityEngine;
 
 public class PlayerState
 {
-    #region w/ Components
+    #region w/ Input Variables
 
-    protected Core Core { get; private set; }
+    protected int XInput;
+    protected int YInput;
+    protected bool JumpInput;
+    protected bool JumpInputStop;
+
+    #endregion
+
+    #region w/ Rigidbody Variables
+
+    protected Vector2 CurrentVelocity;
+
+    #endregion
+
+    #region w/ Collision Variables
+
+    protected bool IsGrounded;
+
+    #endregion
     
-    protected PlayerData PlayerData { get; private set; }
+    #region w/ Components
     
     protected Player Player { get; private set; }
+    
+    protected Core Core { get; private set; }
+    protected PlayerData PlayerData { get; private set; }
     protected PlayerStateMachine StateMachine { get; private set; }
 
+    // State Action Bools
     protected bool IsAnimationFinished;
     protected bool IsExitingState;
 
     protected float StartTime;
 
-    private string _animationBoolName;    
+    private readonly string _animationBoolName;
 
     #endregion
 
@@ -38,7 +59,11 @@ public class PlayerState
     
     #region w/ State Workflow
 
-    public virtual void DoCheck() { }
+    public virtual void DoCheck()
+    {
+        // Check Collision
+        IsGrounded = Core.CollisionSenses.Ground;
+    }
 
     public virtual void Enter()
     {
@@ -54,8 +79,19 @@ public class PlayerState
         Player.Animator.SetBool(_animationBoolName, false);
         IsExitingState = true;
     }
-    
-    public virtual void LogicUpdate() { }
+
+    public virtual void LogicUpdate()
+    {
+        // Check Input
+        XInput = Player.InputHandler.NormalizedXInput;
+        Core.Movement.CheckIfShouldFlip(XInput);
+        YInput = Player.InputHandler.NormalizedYInput;
+        JumpInput = Player.InputHandler.JumpInput;
+        JumpInputStop = Player.InputHandler.JumpInputStop;
+        
+        // Check Current Velocity
+        CurrentVelocity = Core.Movement.CurrentVelocity;
+    }
 
     public virtual void PhysicsUpdate()
     {
