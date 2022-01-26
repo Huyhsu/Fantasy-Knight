@@ -6,5 +6,43 @@ public class PlayerTouchingWallState : PlayerState
 {
     protected PlayerTouchingWallState(Player player, string animationBoolName) : base(player, animationBoolName)
     {
+        // 1 WallJumpState
+        // 2 IdleState
+        // 3 InAirState
+        // 4 LedgeClimbState
     }
+
+    #region w/ State Workflow
+
+    public override void DoCheck()
+    {
+        base.DoCheck();
+
+        if (!IsTouchingLedge && IsTouchingWall)
+        {
+            // Check Position
+        }
+    }
+
+    public override void Enter()
+    {
+        base.Enter();
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+    }
+
+    public override void LogicUpdate()
+    {
+        base.LogicUpdate();
+    }
+
+    public override void PhysicsUpdate()
+    {
+        base.PhysicsUpdate();
+    }
+
+    #endregion
 }

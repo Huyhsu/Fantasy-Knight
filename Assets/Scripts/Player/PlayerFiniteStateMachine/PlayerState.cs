@@ -22,6 +22,8 @@ public class PlayerState
     #region w/ Collision Variables
 
     protected bool IsGrounded;
+    protected bool IsTouchingWall;
+    protected bool IsTouchingLedge;
 
     #endregion
     
@@ -63,6 +65,8 @@ public class PlayerState
     {
         // Check Collision
         IsGrounded = Core.CollisionSenses.Ground;
+        IsTouchingWall = Core.CollisionSenses.WallFront;
+        IsTouchingLedge = Core.CollisionSenses.LedgeHorizontal;
     }
 
     public virtual void Enter()
