@@ -37,6 +37,17 @@ public class PlayerTouchingWallState : PlayerState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+
+        if (IsGrounded && !GrabInput)
+        {
+            // Idle
+            StateMachine.ChangeState(Player.IdleState);
+        }
+        else if (!IsTouchingWall || (XInput != FacingDirection && !GrabInput))
+        {
+            // InAir
+            StateMachine.ChangeState(Player.InAirState);
+        }
     }
 
     public override void PhysicsUpdate()

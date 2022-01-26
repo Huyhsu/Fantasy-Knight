@@ -14,13 +14,14 @@ public class PlayerState
 
     #endregion
 
-    #region w/ Rigidbody Variables
+    #region w/ Movement Variables
 
     protected Vector2 CurrentVelocity;
+    protected int FacingDirection;
 
     #endregion
 
-    #region w/ Collision Variables
+    #region w/ Collision Senses Variables
 
     protected bool IsGrounded;
     protected bool IsTouchingWall;
@@ -87,15 +88,14 @@ public class PlayerState
 
     public virtual void LogicUpdate()
     {
-        // Check Input
+        // Check Input and Movement
         XInput = Player.InputHandler.NormalizedXInput;
         Core.Movement.CheckIfShouldFlip(XInput);
+        FacingDirection = Core.Movement.FacingDirection;
         YInput = Player.InputHandler.NormalizedYInput;
         JumpInput = Player.InputHandler.JumpInput;
         JumpInputStop = Player.InputHandler.JumpInputStop;
         GrabInput = Player.InputHandler.GrabInput;
-
-        // Check Current Velocity
         CurrentVelocity = Core.Movement.CurrentVelocity;
     }
 

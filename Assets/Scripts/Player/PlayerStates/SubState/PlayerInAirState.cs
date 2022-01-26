@@ -77,6 +77,11 @@ public class PlayerInAirState : PlayerState
             // Jump
             StateMachine.ChangeState(Player.JumpState);
         }
+        else if (IsTouchingWall && XInput == FacingDirection && CurrentVelocity.y < Mathf.Epsilon)
+        {
+            // WallSlide
+            StateMachine.ChangeState(Player.WallSlideState);
+        }
         else
         {
             // Set up Jump/Fall Animation

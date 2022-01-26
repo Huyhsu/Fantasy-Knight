@@ -2,17 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWallGrabState : MonoBehaviour
+public class PlayerWallGrabState : PlayerTouchingWallState
 {
-    // Start is called before the first frame update
-    void Start()
+    public PlayerWallGrabState(Player player, string animationBoolName) : base(player, animationBoolName)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

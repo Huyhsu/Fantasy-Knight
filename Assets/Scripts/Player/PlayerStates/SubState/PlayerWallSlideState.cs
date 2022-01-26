@@ -2,17 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWallSlideState : MonoBehaviour
+public class PlayerWallSlideState : PlayerTouchingWallState
 {
-    // Start is called before the first frame update
-    void Start()
+    public PlayerWallSlideState(Player player, string animationBoolName) : base(player, animationBoolName)
     {
-        
+        // 1 WallGrabState (TouchingWallState)
+    }
+    
+    public override void LogicUpdate()
+    {
+        base.LogicUpdate();
+        if (IsExitingState) return;
+
+        if (GrabInput && YInput == 0)
+        {
+            // WallGrab
+            StateMachine.ChangeState(Player.WallGrabState);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void PhysicsUpdate()
     {
+        base.PhysicsUpdate();
         
+        Core.Movement.SetVelocityY(-PlayerData.wallSlideVelocity);
     }
 }

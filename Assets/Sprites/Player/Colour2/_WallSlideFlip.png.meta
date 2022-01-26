@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: 49f9f97e35ba4284c98229595c689a60
+guid: 1a7ba8a9691fc964fb9e747d8cb73e5a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8226172128858187006
-    second: _WallSlide_0
+      213: -4770903273233868575
+    second: _WallSlideFlip_0
   - first:
-      213: 7951352749283311657
-    second: _WallSlide_1
+      213: 4180116252381322815
+    second: _WallSlideFlip_1
   - first:
-      213: 2292367547832847277
-    second: _WallSlide_2
+      213: 5699370821045983961
+    second: _WallSlideFlip_2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -100,64 +100,64 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: _WallSlide_0
+      name: _WallSlideFlip_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 120
         height: 80
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.54, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 20b503e6804c6dd80800000000000000
-      internalID: -8226172128858187006
+      spriteID: 1e8952510c85acdb0800000000000000
+      internalID: -4770903273233868575
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: _WallSlide_1
+      name: _WallSlideFlip_1
       rect:
         serializedVersion: 2
         x: 120
         y: 0
         width: 120
         height: 80
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.54, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9208bd88231e85e60800000000000000
-      internalID: 7951352749283311657
+      spriteID: f3e96079591c20a30800000000000000
+      internalID: 4180116252381322815
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: _WallSlide_2
+      name: _WallSlideFlip_2
       rect:
         serializedVersion: 2
         x: 240
         y: 0
         width: 120
         height: 80
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.54, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dabc537a32020df10800000000000000
-      internalID: 2292367547832847277
+      spriteID: 9da1cafa09b381f40800000000000000
+      internalID: 5699370821045983961
       vertices: []
       indices: 
       edges: []
