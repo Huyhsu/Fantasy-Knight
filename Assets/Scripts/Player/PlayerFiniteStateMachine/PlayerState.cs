@@ -10,6 +10,7 @@ public class PlayerState
     protected int YInput;
     protected bool JumpInput;
     protected bool JumpInputStop;
+    protected bool GrabInput;
 
     #endregion
 
@@ -92,7 +93,8 @@ public class PlayerState
         YInput = Player.InputHandler.NormalizedYInput;
         JumpInput = Player.InputHandler.JumpInput;
         JumpInputStop = Player.InputHandler.JumpInputStop;
-        
+        GrabInput = Player.InputHandler.GrabInput;
+
         // Check Current Velocity
         CurrentVelocity = Core.Movement.CurrentVelocity;
     }

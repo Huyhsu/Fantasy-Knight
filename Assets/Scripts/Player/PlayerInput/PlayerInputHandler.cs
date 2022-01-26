@@ -27,7 +27,8 @@ public class PlayerInputHandler : MonoBehaviour
     public int NormalizedXInput { get; private set; }
     public int NormalizedYInput { get; private set; }
     public bool JumpInput { get; private set; }
-    public bool JumpInputStop { get; private set; }    
+    public bool JumpInputStop { get; private set; }
+    public bool GrabInput { get; private set; }
 
     #endregion
 
@@ -80,6 +81,23 @@ public class PlayerInputHandler : MonoBehaviour
         if (Time.time >= _jumpInputStartTime + inputHoldTime)
         {
             JumpInput = false;
+        }
+    }
+
+    #endregion
+
+    #region w/ Wall Grab
+
+    public void OnGrabInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            GrabInput = true;
+        }
+
+        if (context.canceled)
+        {
+            GrabInput = false;
         }
     }
 
