@@ -6,7 +6,7 @@ public class PlayerIdleState : PlayerGroundedState
 {
     public PlayerIdleState(Player player, string animationBoolName) : base(player, animationBoolName)
     {
-        // 1 MoveState (GroundedState)
+        // 1 MoveState
     }
 
     #region w/ State Workflow

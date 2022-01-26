@@ -6,9 +6,11 @@ public class PlayerWallSlideState : PlayerTouchingWallState
 {
     public PlayerWallSlideState(Player player, string animationBoolName) : base(player, animationBoolName)
     {
-        // 1 WallGrabState (TouchingWallState)
+        // 1 WallGrabState
     }
-    
+
+    #region w/ State Workflow
+
     public override void LogicUpdate()
     {
         base.LogicUpdate();
@@ -26,5 +28,7 @@ public class PlayerWallSlideState : PlayerTouchingWallState
         base.PhysicsUpdate();
         
         Core.Movement.SetVelocityY(-PlayerData.wallSlideVelocity);
-    }
+    }    
+
+    #endregion
 }
