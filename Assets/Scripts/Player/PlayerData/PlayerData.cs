@@ -18,4 +18,7 @@ public class PlayerData : ScriptableObject
 
     [Header("Wall Slide State")]
     public float wallSlideVelocity = 3f;
+    
+    [Header("Wall Climb State")]
+    public float wallClimbVelocity = 3f;
 }

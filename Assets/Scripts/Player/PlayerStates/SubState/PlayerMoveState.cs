@@ -9,6 +9,8 @@ public class PlayerMoveState : PlayerGroundedState
         // 1 IdleState
     }
 
+    private int _xInput;
+    
     #region w/ State Workflow
 
     public override void DoCheck()
@@ -31,7 +33,12 @@ public class PlayerMoveState : PlayerGroundedState
         base.LogicUpdate();
         if (IsExitingState) return;
 
-        if (XInput == 0)
+        _xInput = Player.InputHandler.NormalizedXInput;
+        
+        Core.Movement.CheckIfShouldFlip(_xInput);
+        Core.Movement.SetVelocityX(_xInput * PlayerData.movementVelocity);
+
+        if (_xInput == 0)
         {
             // Idle
             StateMachine.ChangeState(Player.IdleState);
@@ -42,7 +49,7 @@ public class PlayerMoveState : PlayerGroundedState
     {
         base.PhysicsUpdate();
         
-        Core.Movement.SetVelocityX(XInput * PlayerData.movementVelocity);
+        // Core.Movement.SetVelocityX(XInput * PlayerData.movementVelocity);
     }
 
     #endregion

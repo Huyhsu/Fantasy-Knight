@@ -9,6 +9,9 @@ public class PlayerWallSlideState : PlayerTouchingWallState
         // 1 WallGrabState
     }
 
+    private int _yInput;
+    private bool _grabInput;
+    
     #region w/ State Workflow
 
     public override void LogicUpdate()
@@ -16,7 +19,12 @@ public class PlayerWallSlideState : PlayerTouchingWallState
         base.LogicUpdate();
         if (IsExitingState) return;
 
-        if (GrabInput && YInput == 0)
+        _yInput = Player.InputHandler.NormalizedYInput;
+        _grabInput = Player.InputHandler.GrabInput;
+        
+        Core.Movement.SetVelocityY(-PlayerData.wallSlideVelocity);
+
+        if (_grabInput && _yInput == 0)
         {
             // WallGrab
             StateMachine.ChangeState(Player.WallGrabState);
@@ -27,7 +35,7 @@ public class PlayerWallSlideState : PlayerTouchingWallState
     {
         base.PhysicsUpdate();
         
-        Core.Movement.SetVelocityY(-PlayerData.wallSlideVelocity);
+        // Core.Movement.SetVelocityY(-PlayerData.wallSlideVelocity);
     }    
 
     #endregion

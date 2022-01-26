@@ -8,13 +8,25 @@ public class PlayerGroundedState : PlayerState
     {
         // 1 JumpState (AbilityState)
         // 2 InAirState (State)
+        // 3 WallGrab (TouchingWallState)
     }
 
+    private bool _jumpInput;
+    private bool _grabInput;
+    
+    private bool _isGrounded;
+    private bool _isTouchingWall;
+    private bool _isTouchingLedge;
+    
     #region w/ State Workflow
 
     public override void DoCheck()
     {
         base.DoCheck();
+        
+        _isGrounded = Core.CollisionSenses.Ground;
+        _isTouchingWall = Core.CollisionSenses.WallFront;
+        _isTouchingLedge = Core.CollisionSenses.LedgeHorizontal;
     }
 
     public override void Enter()
@@ -33,16 +45,24 @@ public class PlayerGroundedState : PlayerState
     {
         base.LogicUpdate();
 
-        if (JumpInput && Player.JumpState.CanJump)
+        _jumpInput = Player.InputHandler.JumpInput;
+        _grabInput = Player.InputHandler.GrabInput;
+        
+        if (_jumpInput && Player.JumpState.CanJump)
         {
             // Jump
             StateMachine.ChangeState(Player.JumpState);
         }
-        else if (!IsGrounded)
+        else if (!_isGrounded)
         {
             // InAir
             Player.InAirState.StartJumpCoyoteTime();
             StateMachine.ChangeState(Player.InAirState);
+        }
+        else if (_isTouchingWall && _grabInput && _isTouchingLedge)
+        {
+            // WallGrab
+            StateMachine.ChangeState(Player.WallGrabState);
         }
     }
 

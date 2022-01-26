@@ -9,6 +9,8 @@ public class PlayerIdleState : PlayerGroundedState
         // 1 MoveState
     }
 
+    private int _xInput;
+    
     #region w/ State Workflow
 
     public override void DoCheck()
@@ -33,7 +35,9 @@ public class PlayerIdleState : PlayerGroundedState
         base.LogicUpdate();
         if (IsExitingState) return;
 
-        if (XInput != 0)
+        _xInput = Player.InputHandler.NormalizedXInput;
+        
+        if (_xInput != 0)
         {
             // Move
             StateMachine.ChangeState(Player.MoveState);

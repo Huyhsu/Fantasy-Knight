@@ -6,29 +6,14 @@ public class PlayerState
 {
     #region w/ Input Variables
 
-    protected int XInput;
-    protected int YInput;
-    protected bool JumpInput;
-    protected bool JumpInputStop;
-    protected bool GrabInput;
+    // protected int XInput;
+    // protected int YInput;
+    // protected bool JumpInput;
+    // protected bool JumpInputStop;
+    // protected bool GrabInput;
 
     #endregion
 
-    #region w/ Movement Variables
-
-    protected Vector2 CurrentVelocity;
-    protected int FacingDirection;
-
-    #endregion
-
-    #region w/ Collision Senses Variables
-
-    protected bool IsGrounded;
-    protected bool IsTouchingWall;
-    protected bool IsTouchingLedge;
-
-    #endregion
-    
     #region w/ Components
     
     protected Player Player { get; private set; }
@@ -63,13 +48,7 @@ public class PlayerState
     
     #region w/ State Workflow
 
-    public virtual void DoCheck()
-    {
-        // Check Collision
-        IsGrounded = Core.CollisionSenses.Ground;
-        IsTouchingWall = Core.CollisionSenses.WallFront;
-        IsTouchingLedge = Core.CollisionSenses.LedgeHorizontal;
-    }
+    public virtual void DoCheck() { }
 
     public virtual void Enter()
     {
@@ -88,15 +67,12 @@ public class PlayerState
 
     public virtual void LogicUpdate()
     {
-        // Check Input and Movement
-        XInput = Player.InputHandler.NormalizedXInput;
-        Core.Movement.CheckIfShouldFlip(XInput);
-        FacingDirection = Core.Movement.FacingDirection;
-        YInput = Player.InputHandler.NormalizedYInput;
-        JumpInput = Player.InputHandler.JumpInput;
-        JumpInputStop = Player.InputHandler.JumpInputStop;
-        GrabInput = Player.InputHandler.GrabInput;
-        CurrentVelocity = Core.Movement.CurrentVelocity;
+        // Check Input
+        // XInput = Player.InputHandler.NormalizedXInput;
+        // YInput = Player.InputHandler.NormalizedYInput;
+        // JumpInput = Player.InputHandler.JumpInput;
+        // JumpInputStop = Player.InputHandler.JumpInputStop;
+        // GrabInput = Player.InputHandler.GrabInput;
     }
 
     public virtual void PhysicsUpdate()

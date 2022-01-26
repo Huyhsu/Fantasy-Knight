@@ -11,17 +11,21 @@ public class PlayerAbilityState : PlayerState
     }
 
     protected bool IsAbilityDone;
+    private bool _isGrounded;
     
     #region w/ State Workflow
 
     public override void DoCheck()
     {
         base.DoCheck();
+        
+        _isGrounded = Core.CollisionSenses.Ground;
     }
 
     public override void Enter()
     {
         base.Enter();
+        
         IsAbilityDone = false;
     }
 
@@ -33,17 +37,18 @@ public class PlayerAbilityState : PlayerState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (!IsAbilityDone) return;
-
-        if (IsGrounded && CurrentVelocity.y < Mathf.Epsilon)
+        if (IsAbilityDone)
         {
-            // Idle
-            StateMachine.ChangeState(Player.IdleState);
-        }
-        else
-        {
-            // InAir
-            StateMachine.ChangeState(Player.InAirState);
+            if (_isGrounded && Core.Movement.CurrentVelocity.y < Mathf.Epsilon)
+            {
+                // Idle
+                StateMachine.ChangeState(Player.IdleState);
+            }
+            else
+            {
+                // InAir
+                StateMachine.ChangeState(Player.InAirState);
+            }            
         }
     }
 

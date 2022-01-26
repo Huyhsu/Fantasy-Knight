@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerWallGrabState : PlayerTouchingWallState
@@ -10,6 +11,9 @@ public class PlayerWallGrabState : PlayerTouchingWallState
         // 2 WallSlide
     }
 
+    private int _yInput;
+    private bool _grabInput;
+    
     #region w/ Grab
 
     private Vector2 _holdPosition;
@@ -48,16 +52,19 @@ public class PlayerWallGrabState : PlayerTouchingWallState
         base.LogicUpdate();
         if (IsExitingState) return;
 
+        _yInput = Player.InputHandler.NormalizedYInput;
+        _grabInput = Player.InputHandler.GrabInput;
+        
         HoldPosition();
         
-        if (YInput > 0)
+        if (_yInput > 0)
         {
             // WallClimb
             StateMachine.ChangeState(Player.WallClimbState);
         }
-        else if (YInput < 0 || !GrabInput)
+        else if (_yInput < 0 || !_grabInput)
         {
-            //WallSlide
+            // WallSlide
             StateMachine.ChangeState(Player.WallSlideState);
         }
     }

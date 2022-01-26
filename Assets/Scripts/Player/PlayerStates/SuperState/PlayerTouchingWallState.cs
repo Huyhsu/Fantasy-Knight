@@ -12,13 +12,24 @@ public class PlayerTouchingWallState : PlayerState
         // 4 LedgeClimbState
     }
 
+    private int _xInput;
+    private bool _grabInput;
+    
+    private bool _isGrounded;
+    private bool _isTouchingWall;
+    private bool _isTouchingLedge;
+    
     #region w/ State Workflow
 
     public override void DoCheck()
     {
         base.DoCheck();
 
-        if (!IsTouchingLedge && IsTouchingWall)
+        _isGrounded = Core.CollisionSenses.Ground;
+        _isTouchingWall = Core.CollisionSenses.WallFront;
+        _isTouchingLedge = Core.CollisionSenses.LedgeHorizontal;
+        
+        if (!_isTouchingLedge && _isTouchingWall)
         {
             // Check Position
         }
@@ -38,16 +49,20 @@ public class PlayerTouchingWallState : PlayerState
     {
         base.LogicUpdate();
 
-        if (IsGrounded && !GrabInput)
+        _xInput = Player.InputHandler.NormalizedXInput;
+        _grabInput = Player.InputHandler.GrabInput;
+        
+        if (_isGrounded && !_grabInput)
         {
             // Idle
             StateMachine.ChangeState(Player.IdleState);
         }
-        else if (!IsTouchingWall || (XInput != FacingDirection && !GrabInput))
+        else if (!_isTouchingWall && !_isGrounded || (_xInput != Core.Movement.FacingDirection && !_grabInput))
         {
             // InAir
             StateMachine.ChangeState(Player.InAirState);
         }
+        
     }
 
     public override void PhysicsUpdate()

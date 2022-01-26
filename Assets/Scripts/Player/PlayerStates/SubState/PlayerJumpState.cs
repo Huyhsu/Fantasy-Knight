@@ -6,16 +6,16 @@ public class PlayerJumpState : PlayerAbilityState
 {
     public PlayerJumpState(Player player, string animationBoolName) : base(player, animationBoolName)
     {
-        AmountOfJumpsLeft = player.PlayerData.amountOfJumps;
+        _amountOfJumpsLeft = player.PlayerData.amountOfJumps;
     }
 
     #region w/ Jump
 
-    public int AmountOfJumpsLeft;
-    public bool CanJump => AmountOfJumpsLeft > 0;
+    private int _amountOfJumpsLeft;
+    public bool CanJump => _amountOfJumpsLeft > 0;
     
-    public void ResetAmountOfJumpsLeft() => AmountOfJumpsLeft = Player.PlayerData.amountOfJumps;
-    public void DecreaseAmountOfJumpsLeft() => AmountOfJumpsLeft--;
+    public void ResetAmountOfJumpsLeft() => _amountOfJumpsLeft = Player.PlayerData.amountOfJumps;
+    public void DecreaseAmountOfJumpsLeft() => _amountOfJumpsLeft--;
 
     #endregion
     
@@ -25,16 +25,20 @@ public class PlayerJumpState : PlayerAbilityState
     {
         base.Enter();
         Player.InputHandler.UseJumpInput();
+        
+        Core.Movement.SetVelocityY(PlayerData.jumpVelocity);
+        IsAbilityDone = true;
+        
         DecreaseAmountOfJumpsLeft();
         Player.InAirState.SetIsJumping();
     }
-
+    
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
         
-        Core.Movement.SetVelocityY(PlayerData.jumpVelocity);
-        IsAbilityDone = true;
+        // Core.Movement.SetVelocityY(PlayerData.jumpVelocity);
+        // IsAbilityDone = true;
     }
 
     #endregion
