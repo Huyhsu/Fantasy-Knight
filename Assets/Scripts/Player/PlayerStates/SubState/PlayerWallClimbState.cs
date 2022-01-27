@@ -9,18 +9,14 @@ public class PlayerWallClimbState : PlayerTouchingWallState
         // 1 WallGrabState
     }
 
-    private int _yInput;
-    
+    #region w/ State Workflow
+
     public override void LogicUpdate()
     {
         base.LogicUpdate();
         if (IsExitingState) return;
 
-        _yInput = Player.InputHandler.NormalizedYInput;
-        
-        Core.Movement.SetVelocityY(PlayerData.wallClimbVelocity);
-
-        if (_yInput != 1)
+        if (YInput != 1)
         {
             // WallGrab
             StateMachine.ChangeState(Player.WallGrabState);
@@ -31,6 +27,10 @@ public class PlayerWallClimbState : PlayerTouchingWallState
     {
         base.PhysicsUpdate();
         
-        // Core.Movement.SetVelocityY(PlayerData.wallClimbVelocity);
-    }
+        Core.Movement.SetVelocityY(PlayerData.wallClimbVelocity);
+    }    
+
+    #endregion
+    
+
 }

@@ -33,6 +33,9 @@ public class CollisionSenses : CoreComponent
     #region w/ Check Bools
 
     public bool Ground => Physics2D.OverlapCircle(GroundCheck.position, GroundCheckRadius, WhatIsGround);
+    // public bool Ground => GroundCheck.GetComponent<CollisionChecker>().IsTouching;
+
+    
     public bool WallFront =>
         Physics2D.Raycast(WallCheck.position, Vector2.right * Core.Movement.FacingDirection, WallCheckDistance, WhatIsGround);
     public bool WallBack =>
@@ -48,8 +51,11 @@ public class CollisionSenses : CoreComponent
     {
         if (Core == null) return;
         
+        Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(GroundCheck.position, GroundCheckRadius);
+        Gizmos.color = Color.green;
         Gizmos.DrawLine(WallCheck.position, WallCheck.position + (Vector3)(Vector2.right * Core.Movement.FacingDirection * WallCheckDistance));
+        Gizmos.color = Color.red;
         Gizmos.DrawLine(LedgeHorizontalCheck.position, LedgeHorizontalCheck.position + (Vector3)(Vector2.right * Core.Movement.FacingDirection * WallCheckDistance));
 
     }

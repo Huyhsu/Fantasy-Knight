@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
     public PlayerWallGrabState WallGrabState { get; private set; }
     public PlayerWallClimbState WallClimbState { get; private set; }
     // public PlayerWallJumpState WallJumpState { get; private set; }
+    public PlayerLandState LandState { get; private set; }
 
     #endregion
 
@@ -56,6 +57,8 @@ public class Player : MonoBehaviour
         WallGrabState = new PlayerWallGrabState(this, "wallGrab");
         WallClimbState = new PlayerWallClimbState(this, "wallClimb");
         // WallJumpState = new PlayerWallJumpState(this, "InAir");
+        LandState = new PlayerLandState(this, "move");
+
     }
 
     private void Start()

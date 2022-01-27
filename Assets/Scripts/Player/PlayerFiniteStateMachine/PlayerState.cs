@@ -6,14 +6,29 @@ public class PlayerState
 {
     #region w/ Input Variables
 
-    // protected int XInput;
-    // protected int YInput;
-    // protected bool JumpInput;
-    // protected bool JumpInputStop;
-    // protected bool GrabInput;
+    protected int XInput;
+    protected int YInput;
+    protected bool JumpInput;
+    protected bool JumpInputStop;
+    protected bool GrabInput;
 
     #endregion
 
+    #region w/ Movemment Variables
+
+    protected int FacingDirection;
+    protected Vector2 CurrentVelocity;
+
+    #endregion
+    
+    #region w/ Collision Senses Variables
+
+    protected bool IsGrounded;
+    protected bool IsTouchingWall;
+    protected bool IsTouchingLedge;
+
+    #endregion
+    
     #region w/ Components
     
     protected Player Player { get; private set; }
@@ -48,7 +63,13 @@ public class PlayerState
     
     #region w/ State Workflow
 
-    public virtual void DoCheck() { }
+    public virtual void DoCheck()
+    {
+        // Check Collision Senses Variables
+        IsGrounded = Core.CollisionSenses.Ground;
+        IsTouchingWall = Core.CollisionSenses.WallFront;
+        IsTouchingLedge = Core.CollisionSenses.LedgeHorizontal;
+    }
 
     public virtual void Enter()
     {
@@ -67,12 +88,16 @@ public class PlayerState
 
     public virtual void LogicUpdate()
     {
-        // Check Input
-        // XInput = Player.InputHandler.NormalizedXInput;
-        // YInput = Player.InputHandler.NormalizedYInput;
-        // JumpInput = Player.InputHandler.JumpInput;
-        // JumpInputStop = Player.InputHandler.JumpInputStop;
-        // GrabInput = Player.InputHandler.GrabInput;
+        // Check Input Variables
+        XInput = Player.InputHandler.NormalizedXInput;
+        YInput = Player.InputHandler.NormalizedYInput;
+        JumpInput = Player.InputHandler.JumpInput;
+        JumpInputStop = Player.InputHandler.JumpInputStop;
+        GrabInput = Player.InputHandler.GrabInput;
+        
+        // Check Movement Variables
+        FacingDirection = Core.Movement.FacingDirection;
+        CurrentVelocity = Core.Movement.CurrentVelocity;
     }
 
     public virtual void PhysicsUpdate()

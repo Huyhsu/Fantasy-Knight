@@ -11,9 +11,6 @@ public class PlayerWallGrabState : PlayerTouchingWallState
         // 2 WallSlide
     }
 
-    private int _yInput;
-    private bool _grabInput;
-    
     #region w/ Grab
 
     private Vector2 _holdPosition;
@@ -52,17 +49,14 @@ public class PlayerWallGrabState : PlayerTouchingWallState
         base.LogicUpdate();
         if (IsExitingState) return;
 
-        _yInput = Player.InputHandler.NormalizedYInput;
-        _grabInput = Player.InputHandler.GrabInput;
-        
         HoldPosition();
         
-        if (_yInput > 0)
+        if (YInput > 0)
         {
             // WallClimb
             StateMachine.ChangeState(Player.WallClimbState);
         }
-        else if (_yInput < 0 || !_grabInput)
+        else if (YInput < 0 || !GrabInput)
         {
             // WallSlide
             StateMachine.ChangeState(Player.WallSlideState);

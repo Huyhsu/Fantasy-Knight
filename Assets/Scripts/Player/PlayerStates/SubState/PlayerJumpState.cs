@@ -25,10 +25,7 @@ public class PlayerJumpState : PlayerAbilityState
     {
         base.Enter();
         Player.InputHandler.UseJumpInput();
-        
-        Core.Movement.SetVelocityY(PlayerData.jumpVelocity);
-        IsAbilityDone = true;
-        
+        // IsAbilityDone = true;
         DecreaseAmountOfJumpsLeft();
         Player.InAirState.SetIsJumping();
     }
@@ -37,8 +34,8 @@ public class PlayerJumpState : PlayerAbilityState
     {
         base.PhysicsUpdate();
         
-        // Core.Movement.SetVelocityY(PlayerData.jumpVelocity);
-        // IsAbilityDone = true;
+        Core.Movement.SetVelocityY(PlayerData.jumpVelocity);
+        IsAbilityDone = true;
     }
 
     #endregion

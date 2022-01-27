@@ -6,21 +6,12 @@ public class PlayerInAirState : PlayerState
 {
     public PlayerInAirState(Player player, string animationBoolName) : base(player, animationBoolName)
     {
-        // 1 IdleState (GroundedState)
+        // 1 LandState (GroundedState)
         // 2 JumpState (AbilityState)
         // 3 WallGrabState (TouchingWallState)
         // 4 WallSlideState (TouchingWallState)
     }
 
-    private int _xInput;
-    private bool _jumpInput;
-    private bool _jumpInputStop;
-    private bool _grabInput;
-    
-    private bool _isGrounded;
-    private bool _isTouchingWall;
-    private bool _isTouchingLedge;
-    
     #region w/ Jump
     
     private bool _isJumping;
@@ -33,12 +24,12 @@ public class PlayerInAirState : PlayerState
     {
         if (!_isJumping) return;
         
-        if (_jumpInputStop)
+        if (JumpInputStop)
         {
-            Core.Movement.SetVelocityY(Core.Movement.CurrentVelocity.y * PlayerData.variableJumpHeightMultiplier);
+            Core.Movement.SetVelocityY(CurrentVelocity.y * PlayerData.variableJumpHeightMultiplier);
             _isJumping = false;
         }
-        else if (Core.Movement.CurrentVelocity.y < Mathf.Epsilon)
+        else if (CurrentVelocity.y < Mathf.Epsilon)
         {
             _isJumping = false;
         }
@@ -60,10 +51,6 @@ public class PlayerInAirState : PlayerState
     public override void DoCheck()
     {
         base.DoCheck();
-
-        _isGrounded = Core.CollisionSenses.Ground;
-        _isTouchingWall = Core.CollisionSenses.WallFront;
-        _isTouchingLedge = Core.CollisionSenses.LedgeHorizontal;
     }
 
     public override void Enter()
@@ -79,34 +66,28 @@ public class PlayerInAirState : PlayerState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-
-        _xInput = Player.InputHandler.NormalizedXInput;
-        _jumpInput = Player.InputHandler.JumpInput;
-        _jumpInputStop = Player.InputHandler.JumpInputStop;
-        _grabInput = Player.InputHandler.GrabInput;
-
+        
         CheckCoyoteTime();
-        CheckJumpMultiplier();
-        Core.Movement.SetVelocityX(_xInput * PlayerData.movementVelocity);
-        
-        Core.Movement.CheckIfShouldFlip(_xInput);
-        
-        if (_isGrounded && Core.Movement.CurrentVelocity.y < Mathf.Epsilon)
+        // CheckJumpMultiplier();
+
+        Core.Movement.CheckIfShouldFlip(XInput);
+
+        if (IsGrounded && CurrentVelocity.y < Mathf.Epsilon)
         {
-            // Idle
-            StateMachine.ChangeState(Player.IdleState);
+            // Land
+            StateMachine.ChangeState(Player.LandState);
         }
-        else if (_jumpInput && Player.JumpState.CanJump)
+        else if (JumpInput && Player.JumpState.CanJump)
         {
             // Jump
             StateMachine.ChangeState(Player.JumpState);
         }
-        else if (_isTouchingWall && _grabInput && _isTouchingLedge)
+        else if (IsTouchingWall && GrabInput && IsTouchingLedge)
         {
             // WallGrab
             StateMachine.ChangeState(Player.WallGrabState);
         }
-        else if (_isTouchingWall && _xInput == Core.Movement.FacingDirection && Core.Movement.CurrentVelocity.y < 0)
+        else if (IsTouchingWall && XInput == FacingDirection && CurrentVelocity.y < 0)
         {
             // WallSlide
             StateMachine.ChangeState(Player.WallSlideState);
@@ -114,7 +95,7 @@ public class PlayerInAirState : PlayerState
         else
         {
             // Set up Jump/Fall Animation
-            Player.Animator.SetFloat("yVelocity", Core.Movement.CurrentVelocity.y);
+            Player.Animator.SetFloat("yVelocity", CurrentVelocity.y);
         }
     }
 
@@ -122,8 +103,8 @@ public class PlayerInAirState : PlayerState
     {
         base.PhysicsUpdate();
         
-        // CheckJumpMultiplier();
-        // Core.Movement.SetVelocityX(XInput * PlayerData.movementVelocity);
+        CheckJumpMultiplier();
+        Core.Movement.SetVelocityX(XInput * PlayerData.movementVelocity);
     }
 
     #endregion

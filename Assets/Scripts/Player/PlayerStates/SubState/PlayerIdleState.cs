@@ -9,8 +9,6 @@ public class PlayerIdleState : PlayerGroundedState
         // 1 MoveState
     }
 
-    private int _xInput;
-    
     #region w/ State Workflow
 
     public override void DoCheck()
@@ -21,8 +19,6 @@ public class PlayerIdleState : PlayerGroundedState
     public override void Enter()
     {
         base.Enter();
-        
-        Core.Movement.SetVelocityX(0f);
     }
 
     public override void Exit()
@@ -35,9 +31,7 @@ public class PlayerIdleState : PlayerGroundedState
         base.LogicUpdate();
         if (IsExitingState) return;
 
-        _xInput = Player.InputHandler.NormalizedXInput;
-        
-        if (_xInput != 0)
+        if (XInput != 0)
         {
             // Move
             StateMachine.ChangeState(Player.MoveState);
@@ -47,6 +41,8 @@ public class PlayerIdleState : PlayerGroundedState
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+        
+        Core.Movement.SetVelocityX(0f);
     }
 
     #endregion
