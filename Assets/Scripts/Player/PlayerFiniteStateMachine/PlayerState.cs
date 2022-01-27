@@ -14,17 +14,11 @@ public class PlayerState
 
     #endregion
 
-    #region w/ Movemment Variables
-
-    protected int FacingDirection;
-    protected Vector2 CurrentVelocity;
-
-    #endregion
-    
     #region w/ Collision Senses Variables
 
     protected bool IsGrounded;
     protected bool IsTouchingWall;
+    protected bool IsTouchingWallBack;
     protected bool IsTouchingLedge;
 
     #endregion
@@ -68,6 +62,7 @@ public class PlayerState
         // Check Collision Senses Variables
         IsGrounded = Core.CollisionSenses.Ground;
         IsTouchingWall = Core.CollisionSenses.WallFront;
+        IsTouchingWallBack = Core.CollisionSenses.WallBack;
         IsTouchingLedge = Core.CollisionSenses.LedgeHorizontal;
     }
 
@@ -94,10 +89,6 @@ public class PlayerState
         JumpInput = Player.InputHandler.JumpInput;
         JumpInputStop = Player.InputHandler.JumpInputStop;
         GrabInput = Player.InputHandler.GrabInput;
-        
-        // Check Movement Variables
-        FacingDirection = Core.Movement.FacingDirection;
-        CurrentVelocity = Core.Movement.CurrentVelocity;
     }
 
     public virtual void PhysicsUpdate()

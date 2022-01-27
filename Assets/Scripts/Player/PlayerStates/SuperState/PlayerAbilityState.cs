@@ -11,6 +11,7 @@ public class PlayerAbilityState : PlayerState
     }
 
     protected bool IsAbilityDone;
+    protected bool ShouldDoInEnter;
 
     #region w/ State Workflow
 
@@ -22,7 +23,7 @@ public class PlayerAbilityState : PlayerState
     public override void Enter()
     {
         base.Enter();
-        
+        ShouldDoInEnter = true;
         IsAbilityDone = false;
     }
 
@@ -36,7 +37,7 @@ public class PlayerAbilityState : PlayerState
         base.LogicUpdate();
         if (IsAbilityDone)
         {
-            if (IsGrounded && CurrentVelocity.y < Mathf.Epsilon)
+            if (IsGrounded && Core.Movement.CurrentVelocity.y < Mathf.Epsilon)
             {
                 // Idle
                 StateMachine.ChangeState(Player.IdleState);

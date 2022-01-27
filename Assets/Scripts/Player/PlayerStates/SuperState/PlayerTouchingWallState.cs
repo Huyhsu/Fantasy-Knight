@@ -7,9 +7,9 @@ public class PlayerTouchingWallState : PlayerState
     protected PlayerTouchingWallState(Player player, string animationBoolName) : base(player, animationBoolName)
     {
         // 1 WallJumpState
-        // 2 IdleState
-        // 3 InAirState
-        // 4 LedgeClimbState
+        // 2 IdleState (GroundedState)
+        // 3 InAirState (State)
+        // 4 LedgeClimbState (State)
     }
 
     #region w/ State Workflow
@@ -20,7 +20,7 @@ public class PlayerTouchingWallState : PlayerState
 
         if (!IsTouchingLedge && IsTouchingWall)
         {
-            // Check Position
+            // Check Ledge Climb Position
         }
     }
 
@@ -38,12 +38,18 @@ public class PlayerTouchingWallState : PlayerState
     {
         base.LogicUpdate();
 
-        if (IsGrounded && !GrabInput)
+        if (JumpInput)
+        {
+            // WallJump
+            Player.WallJumpState.DetermineWallJumpDirection(IsTouchingWall);
+            StateMachine.ChangeState(Player.WallJumpState);
+        }
+        else if (IsGrounded && !GrabInput)
         {
             // Idle
             StateMachine.ChangeState(Player.IdleState);
         }
-        else if (!IsTouchingWall && !IsGrounded || (XInput != FacingDirection && !GrabInput))
+        else if (!IsTouchingWall && !IsGrounded || (XInput != Core.Movement.FacingDirection && !GrabInput))
         {
             // InAir
             StateMachine.ChangeState(Player.InAirState);

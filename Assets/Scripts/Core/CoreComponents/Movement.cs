@@ -48,6 +48,13 @@ public class Movement : CoreComponent
     
     #region w/ Set Velocity Functions
 
+    public void SetVelocity(float velocity, Vector2 angle, int direction)
+    {
+        angle.Normalize();
+        _workspace.Set(angle.x * velocity * direction, angle.y * velocity);
+        SetFinalVelocity();
+    }
+    
     public void SetVelocityZero()
     {
         _workspace = Vector2.zero;

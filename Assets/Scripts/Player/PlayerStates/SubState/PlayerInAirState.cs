@@ -26,16 +26,16 @@ public class PlayerInAirState : PlayerState
         
         if (JumpInputStop)
         {
-            Core.Movement.SetVelocityY(CurrentVelocity.y * PlayerData.variableJumpHeightMultiplier);
+            Core.Movement.SetVelocityY(Core.Movement.CurrentVelocity.y * PlayerData.variableJumpHeightMultiplier);
             _isJumping = false;
         }
-        else if (CurrentVelocity.y < Mathf.Epsilon)
+        else if (Core.Movement.CurrentVelocity.y < Mathf.Epsilon)
         {
             _isJumping = false;
         }
     }
     
-    private void CheckCoyoteTime()
+    private void CheckJumpCoyoteTime()
     {
         if (_isJumpCoyoteTime && Time.time >= StartTime + PlayerData.coyoteTime)
         {
@@ -67,16 +67,18 @@ public class PlayerInAirState : PlayerState
     {
         base.LogicUpdate();
         
-        CheckCoyoteTime();
-        // CheckJumpMultiplier();
+        CheckJumpCoyoteTime();
 
-        Core.Movement.CheckIfShouldFlip(XInput);
-
-        if (IsGrounded && CurrentVelocity.y < Mathf.Epsilon)
+        if (IsGrounded && Core.Movement.CurrentVelocity.y < Mathf.Epsilon)
         {
             // Land
             StateMachine.ChangeState(Player.LandState);
         }
+        // else if (JumpInput && IsTouchingWall)
+        // {
+        //     Player.WallJumpState.DetermineWallJumpDirection(IsTouchingWall);
+        //     StateMachine.ChangeState(Player.WallJumpState);
+        // }
         else if (JumpInput && Player.JumpState.CanJump)
         {
             // Jump
@@ -87,15 +89,17 @@ public class PlayerInAirState : PlayerState
             // WallGrab
             StateMachine.ChangeState(Player.WallGrabState);
         }
-        else if (IsTouchingWall && XInput == FacingDirection && CurrentVelocity.y < 0)
+        else if (IsTouchingWall && XInput == Core.Movement.FacingDirection && Core.Movement.CurrentVelocity.y < 0)
         {
             // WallSlide
             StateMachine.ChangeState(Player.WallSlideState);
         }
         else
         {
+            Core.Movement.CheckIfShouldFlip(XInput);
+
             // Set up Jump/Fall Animation
-            Player.Animator.SetFloat("yVelocity", CurrentVelocity.y);
+            Player.Animator.SetFloat("yVelocity", Core.Movement.CurrentVelocity.y);
         }
     }
 

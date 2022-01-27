@@ -19,3 +19,6 @@ MonoBehaviour:
   variableJumpHeightMultiplier: 0.5
   wallSlideVelocity: 3
   wallClimbVelocity: 3
+  wallJumpVelocity: 20
+  wallJumpTime: 0.35
+  wallJumpAngle: {x: 1, y: 2}
