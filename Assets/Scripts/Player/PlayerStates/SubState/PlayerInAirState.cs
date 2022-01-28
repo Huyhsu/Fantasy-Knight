@@ -76,7 +76,7 @@ public class PlayerInAirState : PlayerState
         
         CheckJumpCoyoteTime();
 
-        if (IsGrounded && Core.Movement.CurrentVelocity.y < Mathf.Epsilon)
+        if (IsGrounded && Core.Movement.CurrentVelocity.y < 0.01f)
         {
             // Land
             StateMachine.ChangeState(Player.LandState);
@@ -96,7 +96,7 @@ public class PlayerInAirState : PlayerState
             // WallGrab
             StateMachine.ChangeState(Player.WallGrabState);
         }
-        else if (IsTouchingWall && XInput == Core.Movement.FacingDirection && Core.Movement.CurrentVelocity.y < 0)
+        else if (IsTouchingWall && XInput == Core.Movement.FacingDirection && Core.Movement.CurrentVelocity.y < Mathf.Epsilon)
         {
             // WallSlide
             StateMachine.ChangeState(Player.WallSlideState);
