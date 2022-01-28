@@ -565,6 +565,7 @@ GameObject:
   - component: {fileID: 480990548}
   - component: {fileID: 480990547}
   - component: {fileID: 480990546}
+  - component: {fileID: 480990549}
   m_Layer: 0
   m_Name: HiddenPlatform
   m_TagString: Untagged
@@ -998,7 +999,7 @@ CompositeCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
+  m_GeometryType: 1
   m_GenerationType: 0
   m_EdgeRadius: 0
   m_ColliderPaths:
@@ -1051,12 +1052,24 @@ TilemapCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 1
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0.00001
+--- !u!114 &480990549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 480990542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49f18fdccfcefa94ea202c8a9fa73a24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &481000642
 GameObject:
   m_ObjectHideFlags: 0
