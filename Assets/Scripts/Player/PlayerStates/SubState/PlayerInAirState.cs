@@ -8,8 +8,9 @@ public class PlayerInAirState : PlayerState
     {
         // 1 LandState (GroundedState)
         // 2 JumpState (AbilityState)
-        // 3 WallGrabState (TouchingWallState)
-        // 4 WallSlideState (TouchingWallState)
+        // 3 LedgeClimbState (State)
+        // 4 WallGrabState (TouchingWallState)
+        // 5 WallSlideState (TouchingWallState)
     }
 
     #region w/ Jump
@@ -51,6 +52,12 @@ public class PlayerInAirState : PlayerState
     public override void DoCheck()
     {
         base.DoCheck();
+        
+        // 設定 LedgeClimbState 的觀察位置
+        if (IsTouchingWall && !IsTouchingLedge)
+        {
+            Player.LedgeClimbState.SetDetectedPosition(Player.transform.position);
+        }
     }
 
     public override void Enter()
@@ -74,15 +81,15 @@ public class PlayerInAirState : PlayerState
             // Land
             StateMachine.ChangeState(Player.LandState);
         }
-        // else if (JumpInput && IsTouchingWall)
-        // {
-        //     Player.WallJumpState.DetermineWallJumpDirection(IsTouchingWall);
-        //     StateMachine.ChangeState(Player.WallJumpState);
-        // }
         else if (JumpInput && Player.JumpState.CanJump)
         {
             // Jump
             StateMachine.ChangeState(Player.JumpState);
+        }
+        else if (IsTouchingWall && !IsTouchingLedge && !IsGrounded && YInput != -1)
+        {
+            // LedgeClimb
+            StateMachine.ChangeState(Player.LedgeClimbState);
         }
         else if (IsTouchingWall && GrabInput && IsTouchingLedge)
         {

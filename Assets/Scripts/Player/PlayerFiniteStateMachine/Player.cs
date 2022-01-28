@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
     public PlayerWallClimbState WallClimbState { get; private set; }
     public PlayerWallJumpState WallJumpState { get; private set; }
     public PlayerLandState LandState { get; private set; }
+    public PlayerLedgeClimbState LedgeClimbState { get; private set; }
 
     #endregion
 
@@ -58,7 +59,7 @@ public class Player : MonoBehaviour
         WallClimbState = new PlayerWallClimbState(this, "wallClimb");
         WallJumpState = new PlayerWallJumpState(this, "inAir");
         LandState = new PlayerLandState(this, "move");
-
+        LedgeClimbState = new PlayerLedgeClimbState(this, "ledgeClimbState");
     }
 
     private void Start()

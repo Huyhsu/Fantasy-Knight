@@ -26,4 +26,13 @@ public class PlayerData : ScriptableObject
     public float wallJumpVelocity = 20;
     public float wallJumpTime = 0.4f;
     public Vector2 wallJumpAngle = new Vector2(1, 2);
+
+    [Header("Ledge Climb State")]
+    public Vector2 startPositionOffset;
+    public Vector2 stopPositionOffset;
+    
+    [Header("Crouch State")]
+    public float crouchMovementVelocity = 3f;
+    public float crouchColliderHeight = 0.8f;
+    public float standColliderHeight = 1.6f;
 }

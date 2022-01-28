@@ -18,9 +18,10 @@ public class PlayerTouchingWallState : PlayerState
     {
         base.DoCheck();
 
-        if (!IsTouchingLedge && IsTouchingWall)
+        // 設定 LedgeClimbState 的觀察位置
+        if (IsTouchingWall && !IsTouchingLedge)
         {
-            // Check Ledge Climb Position
+            Player.LedgeClimbState.SetDetectedPosition(Player.transform.position);
         }
     }
 
@@ -53,6 +54,11 @@ public class PlayerTouchingWallState : PlayerState
         {
             // InAir
             StateMachine.ChangeState(Player.InAirState);
+        }
+        else if (IsTouchingWall && !IsTouchingLedge)
+        {
+            // LedgeClimb
+            StateMachine.ChangeState(Player.LedgeClimbState);
         }
         
     }

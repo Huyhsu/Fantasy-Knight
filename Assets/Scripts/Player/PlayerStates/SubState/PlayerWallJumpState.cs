@@ -55,7 +55,7 @@ public class PlayerWallJumpState : PlayerAbilityState
         base.PhysicsUpdate();
         if (!ShouldDoInEnter) return;
         
-        Core.Movement.SetVelocity(PlayerData.jumpVelocity, PlayerData.wallJumpAngle, _wallJumpDirection);
+        Core.Movement.SetVelocity(PlayerData.wallJumpVelocity, PlayerData.wallJumpAngle, _wallJumpDirection);
         
         ShouldDoInEnter = false;
 
