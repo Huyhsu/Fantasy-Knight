@@ -18,9 +18,10 @@ public class PlayerInAirState : PlayerState
     private bool _isJumping;
     private bool _isJumpCoyoteTime;
     
+    // 由 JumpState 設定是否在跳躍
     public void SetIsJumping() => _isJumping = true;
     public void StartJumpCoyoteTime() => _isJumpCoyoteTime = true;
-    
+    // 若正在跳躍 根據 JumpInput 是否停止來實現不同跳躍高度
     private void CheckJumpMultiplier()
     {
         if (!_isJumping) return;
@@ -30,12 +31,12 @@ public class PlayerInAirState : PlayerState
             Core.Movement.SetVelocityY(Core.Movement.CurrentVelocity.y * PlayerData.variableJumpHeightMultiplier);
             _isJumping = false;
         }
-        else if (Core.Movement.CurrentVelocity.y < Mathf.Epsilon)
+        else if (Core.Movement.CurrentVelocity.y < 0.01f)
         {
             _isJumping = false;
         }
     }
-    
+    // 確認郊狼時間 若已經超過則減少跳躍次數
     private void CheckJumpCoyoteTime()
     {
         if (_isJumpCoyoteTime && Time.time >= StartTime + PlayerData.coyoteTime)
@@ -58,16 +59,6 @@ public class PlayerInAirState : PlayerState
         {
             Player.LedgeClimbState.SetDetectedPosition(Player.transform.position);
         }
-    }
-
-    public override void Enter()
-    {
-        base.Enter();
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
     }
 
     public override void LogicUpdate()
@@ -96,7 +87,7 @@ public class PlayerInAirState : PlayerState
             // WallGrab
             StateMachine.ChangeState(Player.WallGrabState);
         }
-        else if (IsTouchingWall && XInput == Core.Movement.FacingDirection && Core.Movement.CurrentVelocity.y < Mathf.Epsilon)
+        else if (IsTouchingWall && XInput == Core.Movement.FacingDirection && Core.Movement.CurrentVelocity.y < 0.01f)
         {
             // WallSlide
             StateMachine.ChangeState(Player.WallSlideState);

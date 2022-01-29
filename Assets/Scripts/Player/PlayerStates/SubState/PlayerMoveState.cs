@@ -10,22 +10,7 @@ public class PlayerMoveState : PlayerGroundedState
     }
 
     #region w/ State Workflow
-
-    public override void DoCheck()
-    {
-        base.DoCheck();
-    }
-
-    public override void Enter()
-    {
-        base.Enter();
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
+    
     public override void LogicUpdate()
     {
         base.LogicUpdate();
@@ -37,6 +22,11 @@ public class PlayerMoveState : PlayerGroundedState
         {
             // Idle
             StateMachine.ChangeState(Player.IdleState);
+        }
+        else if (YInput == -1)
+        {
+            // CrouchMove
+            StateMachine.ChangeState(Player.CrouchMoveState);
         }
     }
 

@@ -21,7 +21,7 @@ public class PlayerGroundedState : PlayerState
     public override void Enter()
     {
         base.Enter();
-        
+        // 重設跳躍次數
         Player.JumpState.ResetAmountOfJumpsLeft();
     }
 
@@ -34,7 +34,7 @@ public class PlayerGroundedState : PlayerState
     {
         base.LogicUpdate();
 
-        if (JumpInput && Player.JumpState.CanJump)
+        if (JumpInput && Player.JumpState.CanJump && !IsTouchingCeiling)
         {
             // Jump
             StateMachine.ChangeState(Player.JumpState);
@@ -42,6 +42,7 @@ public class PlayerGroundedState : PlayerState
         else if (!IsGrounded)
         {
             // InAir
+            // 在 InAirState 設定郊狼時間為 true
             Player.InAirState.StartJumpCoyoteTime();
             StateMachine.ChangeState(Player.InAirState);
         }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerData : ScriptableObject
 {
     [Header("Move State")]
-    public float movementVelocity = 10f;
+    public float movementVelocity = 7f;
 
     [Header("Jump State")]
     public float jumpVelocity = 15f;
@@ -23,13 +23,13 @@ public class PlayerData : ScriptableObject
     public float wallClimbVelocity = 3f;
 
     [Header("Wall Jump State")]
-    public float wallJumpVelocity = 20;
-    public float wallJumpTime = 0.4f;
+    public float wallJumpVelocity = 16;
+    public float wallJumpTime = 0.35f;
     public Vector2 wallJumpAngle = new Vector2(1, 2);
 
     [Header("Ledge Climb State")]
-    public Vector2 startPositionOffset;
-    public Vector2 stopPositionOffset;
+    public Vector2 startPositionOffset = new Vector2(0.51f, -0.34f);
+    public Vector2 stopPositionOffset = new Vector2(0.4f, 1.7f);
     
     [Header("Crouch State")]
     public float crouchMovementVelocity = 3f;

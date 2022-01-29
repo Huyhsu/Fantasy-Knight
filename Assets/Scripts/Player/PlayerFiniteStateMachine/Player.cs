@@ -31,6 +31,8 @@ public class Player : MonoBehaviour
     public PlayerWallJumpState WallJumpState { get; private set; }
     public PlayerLandState LandState { get; private set; }
     public PlayerLedgeClimbState LedgeClimbState { get; private set; }
+    public PlayerCrouchIdleState CrouchIdleState { get; private set; }
+    public PlayerCrouchMoveState CrouchMoveState { get; private set; }
 
     #endregion
 
@@ -39,9 +41,25 @@ public class Player : MonoBehaviour
     public Core Core { get; private set; }
     public PlayerInputHandler InputHandler { get; private set; }
     public Animator Animator { get; private set; }
+    public BoxCollider2D MovementBoxCollider2D { get; private set; }
 
     #endregion
 
+    #region w/ Set Collider Function
+
+    private Vector2 _workspace;
+    public void SetBoxColliderHeight(float height)
+    {
+        Vector2 center = MovementBoxCollider2D.offset;
+        _workspace.Set(MovementBoxCollider2D.size.x, height);
+        center.y += (height - MovementBoxCollider2D.size.y) / 2;
+
+        MovementBoxCollider2D.size = _workspace;
+        MovementBoxCollider2D.offset = center;
+    }
+
+    #endregion
+    
     #region w/ Unity Callback Functions
 
     private void Awake()
@@ -60,12 +78,15 @@ public class Player : MonoBehaviour
         WallJumpState = new PlayerWallJumpState(this, "inAir");
         LandState = new PlayerLandState(this, "move");
         LedgeClimbState = new PlayerLedgeClimbState(this, "ledgeClimbState");
+        CrouchIdleState = new PlayerCrouchIdleState(this, "crouchIdle");
+        CrouchMoveState = new PlayerCrouchMoveState(this, "crouchMove");
     }
 
     private void Start()
     {
         InputHandler = GetComponent<PlayerInputHandler>();
         Animator = GetComponent<Animator>();
+        MovementBoxCollider2D = GetComponent<BoxCollider2D>();
         
         StateMachine.Initialize(IdleState);
     }

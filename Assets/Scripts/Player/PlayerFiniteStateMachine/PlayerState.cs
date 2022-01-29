@@ -20,7 +20,8 @@ public class PlayerState
     protected bool IsTouchingWall;
     protected bool IsTouchingWallBack;
     protected bool IsTouchingLedge;
-
+    protected bool IsTouchingCeiling;
+    
     #endregion
     
     #region w/ Components
@@ -31,7 +32,7 @@ public class PlayerState
     protected PlayerData PlayerData { get; private set; }
     protected PlayerStateMachine StateMachine { get; private set; }
 
-    // State Action Bools
+    // State Action Booleans
     protected bool IsAnimationFinished;
     protected bool IsExitingState;
 
@@ -64,6 +65,7 @@ public class PlayerState
         IsTouchingWall = Core.CollisionSenses.WallFront;
         IsTouchingWallBack = Core.CollisionSenses.WallBack;
         IsTouchingLedge = Core.CollisionSenses.LedgeHorizontal;
+        IsTouchingCeiling = Core.CollisionSenses.Ceiling;
     }
 
     public virtual void Enter()

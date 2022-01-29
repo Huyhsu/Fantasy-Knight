@@ -6,6 +6,8 @@ public class PlayerJumpState : PlayerAbilityState
 {
     public PlayerJumpState(Player player, string animationBoolName) : base(player, animationBoolName)
     {
+        // Transition to InAirState
+        
         _amountOfJumpsLeft = player.PlayerData.amountOfJumps;
     }
 
@@ -13,8 +15,9 @@ public class PlayerJumpState : PlayerAbilityState
 
     private int _amountOfJumpsLeft;
     public bool CanJump => _amountOfJumpsLeft > 0;
-    
+    // 重設跳躍次數
     public void ResetAmountOfJumpsLeft() => _amountOfJumpsLeft = Player.PlayerData.amountOfJumps;
+    // 減少跳躍次數
     public void DecreaseAmountOfJumpsLeft() => _amountOfJumpsLeft--;
 
     #endregion
@@ -24,8 +27,10 @@ public class PlayerJumpState : PlayerAbilityState
     public override void Enter()
     {
         base.Enter();
+        // 設定 JumpInput 為 false
         Player.InputHandler.UseJumpInput();
         DecreaseAmountOfJumpsLeft();
+        // 在 InAirState 設定正在跳躍 _isJumping，用來確認不同跳躍高度
         Player.InAirState.SetIsJumping();
     }
     
@@ -34,6 +39,7 @@ public class PlayerJumpState : PlayerAbilityState
         base.PhysicsUpdate();
         if (!ShouldDoInEnter) return;
         
+        // 在 Enter 時設定跳躍速度
         Core.Movement.SetVelocityY(PlayerData.jumpVelocity);
         IsAbilityDone = true;
         

@@ -7,25 +7,11 @@ public class PlayerIdleState : PlayerGroundedState
     public PlayerIdleState(Player player, string animationBoolName) : base(player, animationBoolName)
     {
         // 1 MoveState
+        // 2 CrouchIdleState
     }
 
     #region w/ State Workflow
-
-    public override void DoCheck()
-    {
-        base.DoCheck();
-    }
-
-    public override void Enter()
-    {
-        base.Enter();
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
+    
     public override void LogicUpdate()
     {
         base.LogicUpdate();
@@ -35,6 +21,11 @@ public class PlayerIdleState : PlayerGroundedState
         {
             // Move
             StateMachine.ChangeState(Player.MoveState);
+        }
+        else if (YInput == -1)
+        {
+            //CrouchIdle
+            StateMachine.ChangeState(Player.CrouchIdleState);
         }
     }
 

@@ -6,9 +6,7 @@ using UnityEngine.Assertions.Must;
 public class Movement : CoreComponent
 {
     public Rigidbody2D Rigidbody2D { get; private set; }
-    
     public int FacingDirection { get; private set; }
-    
     public bool CanSetVelocity { get; private set; }
     public Vector2 CurrentVelocity { get; private set; }
     

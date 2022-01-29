@@ -9,7 +9,6 @@ public class PlayerLedgeClimbState : PlayerState
     {
         // 1 IdleState (GroundedState)
         // 2 InAirState (State)
-        // 3 WallJumpState (AbilityState)
     }
 
     #region w/ LedgeClimb
@@ -54,12 +53,7 @@ public class PlayerLedgeClimbState : PlayerState
     #endregion
     
     #region w/ State Workflow
-
-    public override void DoCheck()
-    {
-        base.DoCheck();
-    }
-
+    
     public override void Enter()
     {
         base.Enter();
@@ -86,7 +80,7 @@ public class PlayerLedgeClimbState : PlayerState
         _isHanging = false;
 
         // ChangeState 之後將位置設定為終點位置
-        if (_isClimbing && IsAnimationFinished)
+        if (IsAnimationFinished)
         {
             Player.transform.position = _stopPosition;
             _isClimbing = false;
@@ -100,7 +94,17 @@ public class PlayerLedgeClimbState : PlayerState
         // 若播完動畫 (Hold -> Climb)
         if (IsAnimationFinished)
         {
-            StateMachine.ChangeState(Player.IdleState);
+            // 確認上方有無牆壁
+            if (_isTouchingCeiling)
+            {
+                // CrouchIdle
+                StateMachine.ChangeState(Player.CrouchIdleState);
+            }
+            else
+            {
+                // Idle
+                StateMachine.ChangeState(Player.IdleState);
+            }
         }
         // 沒爬上去
         else
@@ -122,20 +126,9 @@ public class PlayerLedgeClimbState : PlayerState
                 // InAir
                 StateMachine.ChangeState(Player.InAirState);
             }
-            else if (JumpInput && !_isClimbing)
-            {
-                // WallJump
-                Player.WallJumpState.DetermineWallJumpDirection(true);
-                StateMachine.ChangeState(Player.WallJumpState);
-            }
         }
     }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-    }
-
+    
     #endregion
 
     #region w/ Animation Trigger Functions
