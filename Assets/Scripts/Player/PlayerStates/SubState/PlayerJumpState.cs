@@ -29,6 +29,10 @@ public class PlayerJumpState : PlayerAbilityState
         base.Enter();
         // 設定 JumpInput 為 false
         Player.InputHandler.UseJumpInput();
+        
+        Core.Movement.SetVelocityY(PlayerData.jumpVelocity);
+        IsAbilityDone = true;
+
         DecreaseAmountOfJumpsLeft();
         // 在 InAirState 設定正在跳躍 _isJumping，用來確認不同跳躍高度
         Player.InAirState.SetIsJumping();
@@ -40,8 +44,7 @@ public class PlayerJumpState : PlayerAbilityState
         if (!ShouldDoInEnter) return;
         
         // 在 Enter 時設定跳躍速度
-        Core.Movement.SetVelocityY(PlayerData.jumpVelocity);
-        IsAbilityDone = true;
+
         
         ShouldDoInEnter = false;
     }
