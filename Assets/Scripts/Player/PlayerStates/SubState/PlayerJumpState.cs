@@ -15,10 +15,8 @@ public class PlayerJumpState : PlayerAbilityState
 
     private int _amountOfJumpsLeft;
     public bool CanJump => _amountOfJumpsLeft > 0;
-    // 重設跳躍次數
-    public void ResetAmountOfJumpsLeft() => _amountOfJumpsLeft = Player.PlayerData.amountOfJumps;
-    // 減少跳躍次數
-    public void DecreaseAmountOfJumpsLeft() => _amountOfJumpsLeft--;
+    public void ResetAmountOfJumpsLeft() => _amountOfJumpsLeft = Player.PlayerData.amountOfJumps;// 重設跳躍次數
+    public void DecreaseAmountOfJumpsLeft() => _amountOfJumpsLeft--;// 減少跳躍次數
 
     #endregion
     
@@ -27,26 +25,11 @@ public class PlayerJumpState : PlayerAbilityState
     public override void Enter()
     {
         base.Enter();
-        // 設定 JumpInput 為 false
-        Player.InputHandler.UseJumpInput();
-        
         Core.Movement.SetVelocityY(PlayerData.jumpVelocity);
         IsAbilityDone = true;
-
         DecreaseAmountOfJumpsLeft();
-        // 在 InAirState 設定正在跳躍 _isJumping，用來確認不同跳躍高度
-        Player.InAirState.SetIsJumping();
-    }
-    
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-        if (!ShouldDoInEnter) return;
-        
-        // 在 Enter 時設定跳躍速度
-
-        
-        ShouldDoInEnter = false;
+        Player.InputHandler.UseJumpInput();// 設定 JumpInput 為 false
+        Player.InAirState.SetIsJumping();// 在 InAirState 設定正在跳躍 _isJumping 用來確認不同跳躍高度
     }
 
     #endregion

@@ -11,29 +11,46 @@ public class PlayerGroundedState : PlayerState
         // 3 WallGrab (TouchingWallState)
     }
 
+    #region w/ Variables
+
+    // Input
+    protected int XInput;
+    protected int YInput;
+    protected bool JumpInput;
+    protected bool GrabInput;
+    // Check
+    protected bool IsGrounded;
+    protected bool IsTouchingWall;
+    protected bool IsTouchingLedge;
+    protected bool IsTouchingCeiling;
+
+    #endregion
+    
     #region w/ State Workflow
 
     public override void DoCheck()
     {
         base.DoCheck();
+        IsGrounded = Core.CollisionSenses.Ground;
+        IsTouchingWall = Core.CollisionSenses.WallFront;
+        IsTouchingLedge = Core.CollisionSenses.LedgeHorizontal;
+        IsTouchingCeiling = Core.CollisionSenses.Ceiling;
     }
 
     public override void Enter()
     {
         base.Enter();
-        // 重設跳躍次數
-        Player.JumpState.ResetAmountOfJumpsLeft();
+        Player.JumpState.ResetAmountOfJumpsLeft();// 重設跳躍次數
     }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
+    
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-
+        XInput = Player.InputHandler.NormalizedXInput;
+        YInput = Player.InputHandler.NormalizedYInput;
+        JumpInput = Player.InputHandler.JumpInput;
+        GrabInput = Player.InputHandler.GrabInput;
+        
         if (JumpInput && Player.JumpState.CanJump && !IsTouchingCeiling)
         {
             // Jump
@@ -42,8 +59,7 @@ public class PlayerGroundedState : PlayerState
         else if (!IsGrounded)
         {
             // InAir
-            // 在 InAirState 設定郊狼時間為 true
-            Player.InAirState.StartJumpCoyoteTime();
+            Player.InAirState.StartJumpCoyoteTime();// 在 InAirState 設定郊狼時間為 true
             StateMachine.ChangeState(Player.InAirState);
         }
         else if (IsTouchingWall && GrabInput && IsTouchingLedge)
@@ -52,11 +68,6 @@ public class PlayerGroundedState : PlayerState
             StateMachine.ChangeState(Player.WallGrabState);
         }
     }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-    }    
 
     #endregion
 

@@ -11,7 +11,13 @@ public class PlayerIdleState : PlayerGroundedState
     }
 
     #region w/ State Workflow
-    
+
+    public override void Enter()
+    {
+        base.Enter();
+        Core.Movement.SetVelocityX(0f);
+    }
+
     public override void LogicUpdate()
     {
         base.LogicUpdate();
@@ -27,13 +33,6 @@ public class PlayerIdleState : PlayerGroundedState
             //CrouchIdle
             StateMachine.ChangeState(Player.CrouchIdleState);
         }
-    }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-        
-        Core.Movement.SetVelocityX(0f);
     }
 
     #endregion

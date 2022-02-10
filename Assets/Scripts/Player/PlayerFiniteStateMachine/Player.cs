@@ -40,6 +40,7 @@ public class Player : MonoBehaviour
 
     public Core Core { get; private set; }
     public PlayerInputHandler InputHandler { get; private set; }
+    
     public Animator Animator { get; private set; }
     public BoxCollider2D MovementBoxCollider2D { get; private set; }
 
@@ -48,7 +49,7 @@ public class Player : MonoBehaviour
     #region w/ Set Collider Function
 
     private Vector2 _workspace;
-    public void SetBoxColliderHeight(float height)
+    public void SetBoxColliderHeight(float height)// 設定蹲下或站起的高度
     {
         Vector2 center = MovementBoxCollider2D.offset;
         _workspace.Set(MovementBoxCollider2D.size.x, height);

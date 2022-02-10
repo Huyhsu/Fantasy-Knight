@@ -14,7 +14,6 @@ public class PlayerWallGrabState : PlayerTouchingWallState
     #region w/ Grab
 
     private Vector2 _holdPosition;
-
     private void HoldPosition()
     {
         Player.transform.position = _holdPosition;
@@ -29,8 +28,7 @@ public class PlayerWallGrabState : PlayerTouchingWallState
     public override void Enter()
     {
         base.Enter();
-
-        _holdPosition = Player.transform.position;
+        _holdPosition = Player.transform.position;// 確認當前 Hold 位置
         HoldPosition();
     }
     
@@ -38,9 +36,8 @@ public class PlayerWallGrabState : PlayerTouchingWallState
     {
         base.LogicUpdate();
         if (IsExitingState) return;
-
-        // 固定位置
-        HoldPosition();
+        
+        HoldPosition();// 固定位置
         
         if (YInput > 0)
         {

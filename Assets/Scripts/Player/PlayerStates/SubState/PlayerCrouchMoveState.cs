@@ -15,17 +15,13 @@ public class PlayerCrouchMoveState : PlayerGroundedState
     public override void Enter()
     {
         base.Enter();
-        
-        // 設定蹲下高度
-        Player.SetBoxColliderHeight(PlayerData.crouchColliderHeight);
+        Player.SetBoxColliderHeight(PlayerData.crouchColliderHeight);// 設定蹲下高度
     }
 
     public override void Exit()
     {
         base.Exit();
-        
-        // 設定站起高度
-        Player.SetBoxColliderHeight(PlayerData.standColliderHeight);
+        Player.SetBoxColliderHeight(PlayerData.standColliderHeight);// 設定站起高度
     }
 
     public override void LogicUpdate()
@@ -34,7 +30,8 @@ public class PlayerCrouchMoveState : PlayerGroundedState
         if (IsExitingState) return;
 
         Core.Movement.CheckIfShouldFlip(XInput);
-
+        Core.Movement.SetVelocityX(XInput * PlayerData.crouchMovementVelocity);
+        
         if (XInput == 0)
         {
             // CrouchIdle
@@ -46,13 +43,6 @@ public class PlayerCrouchMoveState : PlayerGroundedState
             StateMachine.ChangeState(Player.MoveState);
         }
     }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-        
-        Core.Movement.SetVelocityX(XInput * PlayerData.crouchMovementVelocity);
-    }    
 
     #endregion
 }

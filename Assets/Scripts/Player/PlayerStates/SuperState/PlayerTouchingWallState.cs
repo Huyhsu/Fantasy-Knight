@@ -12,33 +12,43 @@ public class PlayerTouchingWallState : PlayerState
         // 4 LedgeClimbState (State)
     }
 
+    #region w/ Variables
+
+    // Input
+    protected int XInput;
+    protected int YInput;
+    protected bool JumpInput;
+    protected bool GrabInput;
+    // Check
+    protected bool IsGrounded;
+    protected bool IsTouchingWall;
+    protected bool IsTouchingLedge;
+
+    #endregion
+    
     #region w/ State Workflow
 
     public override void DoCheck()
     {
         base.DoCheck();
+        IsGrounded = Core.CollisionSenses.Ground;
+        IsTouchingWall = Core.CollisionSenses.WallFront;
+        IsTouchingLedge = Core.CollisionSenses.LedgeHorizontal;
 
-        // 設定 LedgeClimbState 的觀察位置
-        if (IsTouchingWall && !IsTouchingLedge)
+        if (IsTouchingWall && !IsTouchingLedge)// 設定 LedgeClimbState 的觀察位置
         {
             Player.LedgeClimbState.SetDetectedPosition(Player.transform.position);
         }
     }
 
-    public override void Enter()
-    {
-        base.Enter();
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-
+        XInput = Player.InputHandler.NormalizedXInput;
+        YInput = Player.InputHandler.NormalizedYInput;
+        JumpInput = Player.InputHandler.JumpInput;
+        GrabInput = Player.InputHandler.GrabInput;
+        
         if (JumpInput)
         {
             // WallJump
@@ -61,11 +71,6 @@ public class PlayerTouchingWallState : PlayerState
             StateMachine.ChangeState(Player.LedgeClimbState);
         }
         
-    }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
     }
 
     #endregion

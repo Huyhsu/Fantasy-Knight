@@ -17,8 +17,6 @@ public class PlayerLandState : PlayerGroundedState
         base.LogicUpdate();
         if (IsExitingState) return;
 
-        XInput = Player.InputHandler.NormalizedXInput;
-        
         if (XInput != 0)
         {
             // Move

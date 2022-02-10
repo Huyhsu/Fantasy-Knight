@@ -13,20 +13,32 @@ public class PlayerInAirState : PlayerState
         // 5 WallSlideState (TouchingWallState)
     }
 
+    #region w/ Variables
+
+    // Input
+    private int _xInput;
+    private int _yInput;
+    private bool _jumpInput;
+    private bool _jumpInputStop;
+    private bool _grabInput;
+    // Check
+    private bool _isGrounded;
+    private bool _isTouchingWall;
+    private bool _isTouchingLedge;
+
+    #endregion
+    
     #region w/ Jump
     
     private bool _isJumping;
     private bool _isJumpCoyoteTime;
-    
-    // 由 JumpState 設定是否在跳躍
-    public void SetIsJumping() => _isJumping = true;
+    public void SetIsJumping() => _isJumping = true;// 由 JumpState 設定是否在跳躍
     public void StartJumpCoyoteTime() => _isJumpCoyoteTime = true;
-    // 若正在跳躍 根據 JumpInput 是否停止來實現不同跳躍高度
-    private void CheckJumpMultiplier()
+    private void CheckJumpMultiplier()// 若正在跳躍 根據 JumpInput 是否停止來實現不同跳躍高度
     {
         if (!_isJumping) return;
         
-        if (JumpInputStop)
+        if (_jumpInputStop)
         {
             Core.Movement.SetVelocityY(Core.Movement.CurrentVelocity.y * PlayerData.variableJumpHeightMultiplier);
             _isJumping = false;
@@ -36,14 +48,11 @@ public class PlayerInAirState : PlayerState
             _isJumping = false;
         }
     }
-    // 確認郊狼時間 若已經超過則減少跳躍次數
-    private void CheckJumpCoyoteTime()
+    private void CheckJumpCoyoteTime()// 確認郊狼時間 若超過時間 則減少跳躍次數
     {
-        if (_isJumpCoyoteTime && Time.time >= StartTime + PlayerData.coyoteTime)
-        {
-            _isJumpCoyoteTime = false;
-            Player.JumpState.DecreaseAmountOfJumpsLeft();
-        }
+        if (!_isJumpCoyoteTime || !(Time.time >= StartTime + PlayerData.coyoteTime)) return;
+        _isJumpCoyoteTime = false;
+        Player.JumpState.DecreaseAmountOfJumpsLeft();
     }
 
     #endregion
@@ -53,9 +62,11 @@ public class PlayerInAirState : PlayerState
     public override void DoCheck()
     {
         base.DoCheck();
-        
-        // 設定 LedgeClimbState 的觀察位置
-        if (IsTouchingWall && !IsTouchingLedge)
+        _isGrounded = Core.CollisionSenses.Ground;
+        _isTouchingWall = Core.CollisionSenses.WallFront;
+        _isTouchingLedge = Core.CollisionSenses.LedgeHorizontal;
+
+        if (_isTouchingWall && !_isTouchingLedge)// 設定 LedgeClimbState 的觀察位置
         {
             Player.LedgeClimbState.SetDetectedPosition(Player.transform.position);
         }
@@ -64,49 +75,47 @@ public class PlayerInAirState : PlayerState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        _xInput = Player.InputHandler.NormalizedXInput;
+        _yInput = Player.InputHandler.NormalizedYInput;
+        _jumpInput = Player.InputHandler.JumpInput;
+        _jumpInputStop = Player.InputHandler.JumpInputStop;
+        _grabInput = Player.InputHandler.GrabInput;
         
         CheckJumpCoyoteTime();
+        CheckJumpMultiplier();
 
-        if (IsGrounded && Core.Movement.CurrentVelocity.y < 0.01f)
+        if (_isGrounded && Core.Movement.CurrentVelocity.y < 0.01f)
         {
             // Land
             StateMachine.ChangeState(Player.LandState);
         }
-        else if (JumpInput && Player.JumpState.CanJump)
+        else if (_jumpInput && Player.JumpState.CanJump)
         {
             // Jump
             StateMachine.ChangeState(Player.JumpState);
         }
-        else if (IsTouchingWall && !IsTouchingLedge && !IsGrounded && YInput != -1)
+        else if (_isTouchingWall && !_isTouchingLedge && !_isGrounded && _yInput != -1)
         {
             // LedgeClimb
             StateMachine.ChangeState(Player.LedgeClimbState);
         }
-        else if (IsTouchingWall && GrabInput && IsTouchingLedge)
+        else if (_isTouchingWall && _grabInput && _isTouchingLedge)
         {
             // WallGrab
             StateMachine.ChangeState(Player.WallGrabState);
         }
-        else if (IsTouchingWall && XInput == Core.Movement.FacingDirection && Core.Movement.CurrentVelocity.y < 0.01f)
+        else if (_isTouchingWall && _xInput == Core.Movement.FacingDirection && Core.Movement.CurrentVelocity.y < 0.01f)
         {
             // WallSlide
             StateMachine.ChangeState(Player.WallSlideState);
         }
         else
         {
-            Core.Movement.CheckIfShouldFlip(XInput);
+            Core.Movement.SetVelocityX(_xInput * PlayerData.movementVelocity);
+            Core.Movement.CheckIfShouldFlip(_xInput);
 
-            // Set up Jump/Fall Animation
-            Player.Animator.SetFloat("yVelocity", Core.Movement.CurrentVelocity.y);
+            Player.Animator.SetFloat("yVelocity", Core.Movement.CurrentVelocity.y);// Set up Jump/Fall Animation
         }
-    }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-        
-        CheckJumpMultiplier();
-        Core.Movement.SetVelocityX(XInput * PlayerData.movementVelocity);
     }
 
     #endregion

@@ -4,26 +4,6 @@ using UnityEngine;
 
 public class PlayerState
 {
-    #region w/ Input Variables
-
-    protected int XInput;
-    protected int YInput;
-    protected bool JumpInput;
-    protected bool JumpInputStop;
-    protected bool GrabInput;
-
-    #endregion
-
-    #region w/ Collision Senses Variables
-
-    protected bool IsGrounded;
-    protected bool IsTouchingWall;
-    protected bool IsTouchingWallBack;
-    protected bool IsTouchingLedge;
-    protected bool IsTouchingCeiling;
-    
-    #endregion
-    
     #region w/ Components
     
     protected Player Player { get; private set; }
@@ -32,7 +12,7 @@ public class PlayerState
     protected PlayerData PlayerData { get; private set; }
     protected PlayerStateMachine StateMachine { get; private set; }
 
-    // State Action Booleans
+    // State Booleans
     protected bool IsAnimationFinished;
     protected bool IsExitingState;
 
@@ -58,15 +38,7 @@ public class PlayerState
     
     #region w/ State Workflow
 
-    public virtual void DoCheck()
-    {
-        // Check Collision Senses Variables
-        IsGrounded = Core.CollisionSenses.Ground;
-        IsTouchingWall = Core.CollisionSenses.WallFront;
-        IsTouchingWallBack = Core.CollisionSenses.WallBack;
-        IsTouchingLedge = Core.CollisionSenses.LedgeHorizontal;
-        IsTouchingCeiling = Core.CollisionSenses.Ceiling;
-    }
+    public virtual void DoCheck() { }
 
     public virtual void Enter()
     {
@@ -76,23 +48,15 @@ public class PlayerState
         IsAnimationFinished = false;
         IsExitingState = false;
     }
-
+    
     public virtual void Exit()
     {
         Player.Animator.SetBool(_animationBoolName, false);
         IsExitingState = true;
     }
-
-    public virtual void LogicUpdate()
-    {
-        // Check Input Variables
-        XInput = Player.InputHandler.NormalizedXInput;
-        YInput = Player.InputHandler.NormalizedYInput;
-        JumpInput = Player.InputHandler.JumpInput;
-        JumpInputStop = Player.InputHandler.JumpInputStop;
-        GrabInput = Player.InputHandler.GrabInput;
-    }
-
+    
+    public virtual void LogicUpdate() { }
+    
     public virtual void PhysicsUpdate()
     {
         DoCheck();

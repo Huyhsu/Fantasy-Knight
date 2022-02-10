@@ -11,9 +11,12 @@ public class PlayerAbilityState : PlayerState
     }
 
     #region w/ Variables
-
+    
+    // Check
+    protected bool IsGrounded;
+    protected bool IsTouchingWall;
+    // Ability Check
     protected bool IsAbilityDone;
-    protected bool ShouldDoInEnter;    
 
     #endregion
 
@@ -22,42 +25,32 @@ public class PlayerAbilityState : PlayerState
     public override void DoCheck()
     {
         base.DoCheck();
+        IsGrounded = Core.CollisionSenses.Ground;
+        IsTouchingWall = Core.CollisionSenses.WallFront;
     }
 
     public override void Enter()
     {
         base.Enter();
-        ShouldDoInEnter = true;
         IsAbilityDone = false;
     }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
+    
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (IsAbilityDone)
+        if (!IsAbilityDone) return;
+        
+        if (IsGrounded && Core.Movement.CurrentVelocity.y < 0.01f)
         {
-            if (IsGrounded && Core.Movement.CurrentVelocity.y < 0.01f)
-            {
-                // Idle
-                StateMachine.ChangeState(Player.IdleState);
-            }
-            else
-            {
-                // InAir
-                StateMachine.ChangeState(Player.InAirState);
-            }            
+            // Idle
+            StateMachine.ChangeState(Player.IdleState);
+        }
+        else
+        {
+            // InAir
+            StateMachine.ChangeState(Player.InAirState);
         }
     }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-    }    
 
     #endregion
 

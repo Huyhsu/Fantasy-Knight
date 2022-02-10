@@ -12,8 +12,7 @@ public class PlayerWallJumpState : PlayerAbilityState
     #region w/ Wall Jump
 
     private int _wallJumpDirection;
-    // 若面對牆壁 WallJump 的方向須設定相反
-    public void DetermineWallJumpDirection(bool isTouchingWall)
+    public void DetermineWallJumpDirection(bool isTouchingWall)// 若面對牆壁 WallJump 的方向須設定相反
     {
         _wallJumpDirection = isTouchingWall ? -Core.Movement.FacingDirection : Core.Movement.FacingDirection;
     }
@@ -25,8 +24,8 @@ public class PlayerWallJumpState : PlayerAbilityState
     public override void Enter()
     {
         base.Enter();
-        // 設定 JumpInput 為 false
-        Player.InputHandler.UseJumpInput();
+        Core.Movement.SetVelocity(PlayerData.wallJumpVelocity, PlayerData.wallJumpAngle, _wallJumpDirection);
+        Player.InputHandler.UseJumpInput();// 設定 JumpInput 為 false
         Player.JumpState.ResetAmountOfJumpsLeft();
         Player.JumpState.DecreaseAmountOfJumpsLeft();
     }
@@ -36,32 +35,17 @@ public class PlayerWallJumpState : PlayerAbilityState
         base.LogicUpdate();
         
         Core.Movement.CheckIfShouldFlip(_wallJumpDirection);
-        
-        Player.Animator.SetFloat("yVelocity", Core.Movement.CurrentVelocity.y);
+        Player.Animator.SetFloat("yVelocity", Core.Movement.CurrentVelocity.y);// Set up Jump/Fall Animation
 
-        // 若時間一結束 則可切換至其他狀態
-        if (Time.time >= StartTime + PlayerData.wallJumpTime)
+        if (Time.time >= StartTime + PlayerData.wallJumpTime)// 若時間一結束 則可切換至其他狀態
         {
             IsAbilityDone = true;
         }
-
-        // 若時間已過半 且 已碰到另一牆 即可切換至其他狀態
-        if (Time.time > StartTime + PlayerData.wallJumpTime / 2 && IsTouchingWall)
+        
+        if (Time.time > StartTime + PlayerData.wallJumpTime / 2 && IsTouchingWall)// 若時間已過半 且 已碰到另一牆 即可切換至其他狀態
         {
             IsAbilityDone = true;
         }
-    }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-        if (!ShouldDoInEnter) return;
-        
-        // 在 Enter 時設定跳躍速度
-        Core.Movement.SetVelocity(PlayerData.wallJumpVelocity, PlayerData.wallJumpAngle, _wallJumpDirection);
-        
-        ShouldDoInEnter = false;
-
     }
 
     #endregion

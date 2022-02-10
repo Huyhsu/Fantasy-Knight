@@ -7,6 +7,7 @@ public class PlayerMoveState : PlayerGroundedState
     public PlayerMoveState(Player player, string animationBoolName) : base(player, animationBoolName)
     {
         // 1 IdleState
+        // 2 CrouchMoveState
     }
 
     #region w/ State Workflow
@@ -17,7 +18,8 @@ public class PlayerMoveState : PlayerGroundedState
         if (IsExitingState) return;
 
         Core.Movement.CheckIfShouldFlip(XInput);
-
+        Core.Movement.SetVelocityX(XInput * PlayerData.movementVelocity);
+        
         if (XInput == 0)
         {
             // Idle
@@ -28,13 +30,6 @@ public class PlayerMoveState : PlayerGroundedState
             // CrouchMove
             StateMachine.ChangeState(Player.CrouchMoveState);
         }
-    }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-        
-        Core.Movement.SetVelocityX(XInput * PlayerData.movementVelocity);
     }
 
     #endregion
