@@ -12,6 +12,8 @@ public class PlayerAbilityState : PlayerState
 
     #region w/ Variables
     
+    // Input
+    protected int XInput;
     // Check
     protected bool IsGrounded;
     protected bool IsTouchingWall;
@@ -39,6 +41,7 @@ public class PlayerAbilityState : PlayerState
     {
         base.LogicUpdate();
         if (!IsAbilityDone) return;
+        XInput = Player.InputHandler.NormalizedXInput;
         
         if (IsGrounded && Core.Movement.CurrentVelocity.y < 0.01f)
         {
