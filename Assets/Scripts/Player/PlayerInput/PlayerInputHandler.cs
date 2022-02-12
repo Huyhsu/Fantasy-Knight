@@ -29,6 +29,7 @@ public class PlayerInputHandler : MonoBehaviour
     public bool JumpInput { get; private set; }
     public bool JumpInputStop { get; private set; }
     public bool GrabInput { get; private set; }
+    public bool AttackInput { get; private set; }
 
     #endregion
 
@@ -46,6 +47,23 @@ public class PlayerInputHandler : MonoBehaviour
 
     #endregion
 
+    #region w/ Attack
+
+    public void OnAttackInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            AttackInput = true;
+        }
+
+        if (context.canceled)
+        {
+            AttackInput = false;
+        }
+    }
+
+    #endregion
+    
     #region w/ Movement
 
     public void OnMovementInput(InputAction.CallbackContext context)
