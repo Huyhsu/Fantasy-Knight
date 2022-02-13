@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +22,8 @@ public class Weapon : MonoBehaviour
     protected Core Core;
     protected PlayerAttackState State;
 
+    protected Animator BaseAnimator;
+    
     #endregion
     
     #region w/ Variables
@@ -29,6 +32,17 @@ public class Weapon : MonoBehaviour
     
     #endregion
 
+    #region w/ Unity Callback Fuctions
+
+    protected virtual void Awake()
+    {
+        BaseAnimator = transform.Find("Base").GetComponent<Animator>();
+        
+        gameObject.SetActive(false);
+    }
+
+    #endregion
+    
     #region w/ Weapon
 
     public void InitializeWeapon(PlayerAttackState state, Core core)// 初始
@@ -56,12 +70,21 @@ public class Weapon : MonoBehaviour
 
     public virtual void EnterWeapon()
     {
+        gameObject.SetActive(true);
+
         CheckAttackCounter();
+        
+        BaseAnimator.SetBool("attack", true);
+        BaseAnimator.SetInteger("attackCounter", AttackCounter);
     }
 
     public virtual void ExitWeapon()
     {
         AddAttackCounter();
+        
+        BaseAnimator.SetBool("attack", false);
+
+        gameObject.SetActive(false);
     }
 
     public virtual void LogicUpdateWeapon() { }
@@ -77,12 +100,12 @@ public class Weapon : MonoBehaviour
 
     public virtual void AnimationTurnOffFlipTrigger()// 是否能翻轉 = false
     {
-        State.CheckPlayerFlip(false);
+        State.SetPlayerFlip(false);
     }
     
     public virtual void AnimationTurnOnFlipTrigger()// 是否能翻轉 = true
     {
-        State.CheckPlayerFlip(true);
+        State.SetPlayerFlip(true);
     }
 
     public virtual void AnimationStopMovementTrigger()// 停止移動

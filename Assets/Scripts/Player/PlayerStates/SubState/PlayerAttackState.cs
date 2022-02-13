@@ -21,6 +21,8 @@ public class PlayerAttackState : PlayerAbilityState
     private bool _shouldSetVelocity;
     private bool _shouldCheckFlip;
 
+    public bool IsCrouching { get; private set; }
+
     #endregion
 
     #region w/ Weapon
@@ -39,11 +41,14 @@ public class PlayerAttackState : PlayerAbilityState
         _shouldSetVelocity = true;
     }
 
-    public void CheckPlayerFlip(bool value)// 確認 flip
+    public void SetPlayerFlip(bool value)// 確認 flip
     {
         _shouldCheckFlip = value;
     }
-    
+
+    public void SetIsCrouching() => IsCrouching = true;// 蹲下中
+    public void SetIsNotCrouching() => IsCrouching = false;
+
     #endregion
     
     #region w/ State Workflow
@@ -52,6 +57,11 @@ public class PlayerAttackState : PlayerAbilityState
     {
         base.Enter();
 
+        if (IsCrouching)// 是否蹲下
+        {
+            Player.SetBoxColliderHeight(PlayerData.crouchColliderHeight);// 設定蹲下高度
+        }
+        
         _shouldSetVelocity = false;
         _weapon.EnterWeapon();
     }

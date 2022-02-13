@@ -18,12 +18,15 @@ public class PlayerGroundedState : PlayerState
     protected int YInput;
     protected bool JumpInput;
     protected bool GrabInput;
+    protected bool AttackInput;
     // Check
     protected bool IsGrounded;
     protected bool IsTouchingWall;
     protected bool IsTouchingLedge;
     protected bool IsTouchingCeiling;
-
+    // State Check
+    protected bool IsCrouchState;
+    
     #endregion
     
     #region w/ State Workflow
@@ -40,6 +43,7 @@ public class PlayerGroundedState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        IsCrouchState = false;
         Player.JumpState.ResetAmountOfJumpsLeft();// 重設跳躍次數
     }
     
@@ -50,8 +54,21 @@ public class PlayerGroundedState : PlayerState
         YInput = Player.InputHandler.NormalizedYInput;
         JumpInput = Player.InputHandler.JumpInput;
         GrabInput = Player.InputHandler.GrabInput;
-        
-        if (JumpInput && Player.JumpState.CanJump && !IsTouchingCeiling)
+        AttackInput = Player.InputHandler.AttackInput;
+
+        if (AttackInput && IsCrouchState)
+        {
+            // SwordAttack - Crouch
+            Player.SwordAttackState.SetIsCrouching();
+            StateMachine.ChangeState(Player.SwordAttackState);
+        }
+        else if (AttackInput)
+        {
+            // SwordAttack
+            Player.SwordAttackState.SetIsNotCrouching();
+            StateMachine.ChangeState(Player.SwordAttackState);
+        }
+        else if (JumpInput && Player.JumpState.CanJump && !IsTouchingCeiling)
         {
             // Jump
             StateMachine.ChangeState(Player.JumpState);

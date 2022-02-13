@@ -33,6 +33,8 @@ public class Player : MonoBehaviour
     public PlayerLedgeClimbState LedgeClimbState { get; private set; }
     public PlayerCrouchIdleState CrouchIdleState { get; private set; }
     public PlayerCrouchMoveState CrouchMoveState { get; private set; }
+    
+    // Sword Attack
     public PlayerAttackState SwordAttackState { get; private set; }
 
     #endregion
@@ -44,7 +46,8 @@ public class Player : MonoBehaviour
     
     public Animator Animator { get; private set; }
     public BoxCollider2D MovementBoxCollider2D { get; private set; }
-
+    public PlayerWeaponInventory WeaponInventory { get; private set; }
+    
     #endregion
 
     #region w/ Set Collider Function
@@ -82,6 +85,9 @@ public class Player : MonoBehaviour
         LedgeClimbState = new PlayerLedgeClimbState(this, "ledgeClimbState");
         CrouchIdleState = new PlayerCrouchIdleState(this, "crouchIdle");
         CrouchMoveState = new PlayerCrouchMoveState(this, "crouchMove");
+        
+        // Sword Attack
+        SwordAttackState = new PlayerAttackState(this, "attack");
     }
 
     private void Start()
@@ -91,12 +97,19 @@ public class Player : MonoBehaviour
         MovementBoxCollider2D = GetComponent<BoxCollider2D>();
         
         StateMachine.Initialize(IdleState);
+
+        WeaponInventory = GetComponent<PlayerWeaponInventory>();
+        
+        // Set up Weapon----------
+        // Sword Attack
+        SwordAttackState.SetWeapon(WeaponInventory.Weapons[0]);
     }
 
     private void Update()
     {
         Core.LogicUpdate();
         StateMachine.CurrentState.LogicUpdate();
+        // Debug.Log(StateMachine.CurrentState);
     }
 
     private void FixedUpdate()

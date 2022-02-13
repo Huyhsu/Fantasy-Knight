@@ -22,7 +22,7 @@ public class PlayerIdleState : PlayerGroundedState
     {
         base.LogicUpdate();
         if (IsExitingState) return;
-
+        
         if (XInput != 0)
         {
             // Move

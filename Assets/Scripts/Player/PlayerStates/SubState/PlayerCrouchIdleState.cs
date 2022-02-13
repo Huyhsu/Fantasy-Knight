@@ -15,6 +15,7 @@ public class PlayerCrouchIdleState : PlayerGroundedState
     public override void Enter()
     {
         base.Enter();
+        IsCrouchState = true;
         Core.Movement.SetVelocityZero();
         Player.SetBoxColliderHeight(PlayerData.crouchColliderHeight);// 設定蹲下高度
     }
@@ -22,6 +23,7 @@ public class PlayerCrouchIdleState : PlayerGroundedState
     public override void Exit()
     {
         base.Exit();
+        IsCrouchState = false;
         Player.SetBoxColliderHeight(PlayerData.standColliderHeight);// 設定站起高度
     }
 

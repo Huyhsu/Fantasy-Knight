@@ -6,8 +6,9 @@ public class PlayerAbilityState : PlayerState
 {
     protected PlayerAbilityState(Player player, string animationBoolName) : base(player, animationBoolName)
     {
-        // 1 IdleState (GroundedState)
-        // 2 InAirState (State)
+        // 1 CrouchIdleState (GroundedState)
+        // 2 IdleState (GroundedState)
+        // 3 InAirState (State)
     }
 
     #region w/ Variables
@@ -42,10 +43,17 @@ public class PlayerAbilityState : PlayerState
         base.LogicUpdate();
         if (!IsAbilityDone) return;
         XInput = Player.InputHandler.NormalizedXInput;
-        
+
+        if (IsGrounded && Core.Movement.CurrentVelocity.y < 0.01f && Player.SwordAttackState.IsCrouching)
+        {
+            // CrouchIdle
+            StateMachine.ChangeState(Player.CrouchIdleState);
+        }
+        else 
         if (IsGrounded && Core.Movement.CurrentVelocity.y < 0.01f)
         {
             // Idle
+            // Player.SwordCrouchAttackState.SetIsNotCrouching();
             StateMachine.ChangeState(Player.IdleState);
         }
         else
